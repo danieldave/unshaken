@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unshaken</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, sure, protective — a friend who checks before you leap
+   IDEA: a morning status drop, then a deadline board pinned by countdowns
+   PICTURE: the full-screen story card with a live clock
+   COLOUR and TYPE: night green-black, mint for money/safe, gold for deadlines, coral for danger; Space Grotesk + Inter
+   LAYOUT: one phone-width column; Drop, Board, Check as three tabs */
+:root{color-scheme:dark;--bg:#07110D;--card:#0F1D17;--line:rgba(243,247,244,.13);--ink:#F3F7F4;--mute:#A9BDB2;--mint:#2BD38A;--gold:#F5B83D;--coral:#FF8A6B}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.08;margin:0;text-wrap:balance}
+a{color:var(--mint)}
+button,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px 48px}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 10px;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Space Grotesk";font-weight:700;font-size:21px}
+.logo i{width:36px;height:36px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.free{font-size:12px;color:var(--mute);text-align:right}
+nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--card);padding:4px;border-radius:14px;position:sticky;top:8px;z-index:5;border:1px solid var(--line)}
+nav a{min-height:44px;display:grid;place-items:center;border-radius:11px;text-decoration:none;color:var(--ink);font-weight:600}
+nav a[aria-current=page]{background:var(--ink);color:var(--bg)}
+section[hidden]{display:none}
+/* story */
+.story{position:relative;margin-top:14px;border-radius:24px;overflow:hidden;min-height:620px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column}
+.glow{position:absolute;inset:0;pointer-events:none;transition:background .4s}
+.bars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;padding:14px 16px 0;position:relative;z-index:2}
+.bars span{height:3px;border-radius:3px;background:rgba(243,247,244,.22);overflow:hidden}
+.bars b{display:block;height:3px;background:var(--ink);width:0}
+.sbody{position:relative;z-index:2;padding:22px 22px 18px;display:flex;flex-direction:column;gap:16px;flex:1}
+.kick{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--mint)}
+.big{font-family:"Space Grotesk";font-weight:700;font-size:clamp(52px,16vw,72px);line-height:.95;letter-spacing:-2px;white-space:nowrap}
+.sub{color:var(--mute);font-size:14px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{background:rgba(243,247,244,.06);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.tile strong{display:block;font-family:"Space Grotesk";font-size:22px;white-space:nowrap}
+.clock{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.clock div{text-align:center;background:rgba(245,184,61,.1);border:1px solid rgba(245,184,61,.35);border-radius:14px;padding:8px 0}
+.clock b{display:block;font:700 28px "Space Grotesk";color:var(--gold);font-variant-numeric:tabular-nums}
+.clock small{font-size:11px;color:var(--mute)}
+.lead{font-family:"Space Grotesk";font-size:23px;font-weight:600;line-height:1.2}
+.cta{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:3}
+.btn{min-height:50px;flex:1;border-radius:14px;border:1px solid var(--line);background:transparent;font-weight:700;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink);text-align:center}
+.btn.go{background:var(--mint);color:var(--bg);border:0}.btn.gold{background:var(--gold);color:var(--bg);border:0}
+.tap{position:absolute;top:60px;bottom:90px;z-index:1;background:none;border:0}
+.tap.l{left:0;width:35%}.tap.r{right:0;width:65%}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#CFE0D6}
+.warn{background:rgba(255,138,107,.1);border:1px solid rgba(255,138,107,.4);border-radius:16px;padding:14px;display:grid;gap:6px}
+/* board */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 6px}
+.chips button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;font-weight:600}
+.chips button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px;display:grid;gap:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:600;color:var(--mint);background:rgba(43,211,138,.12);padding:4px 9px;border-radius:999px}
+.due{font-size:12px;font-weight:700;color:var(--bg);background:var(--gold);padding:4px 9px;border-radius:999px;white-space:nowrap}
+.due.open{background:var(--mint)}.due.shut{background:#5b6b63;color:var(--ink)}
+.card h3{font-size:19px}
+.card p{margin:0;font-size:15px;color:#CFE0D6}
+.note{font-size:13px;color:var(--gold)}
+details summary{cursor:pointer;font-weight:600;min-height:32px}
+details ol{margin:8px 0 0;padding-left:20px;color:#CFE0D6;font-size:15px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts .btn{min-height:44px;flex:1 1 120px;font-size:15px}
+.empty{color:var(--mute);text-align:center;padding:30px 0}
+/* check */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:16px;display:grid;gap:12px}
+textarea{width:100%;min-height:150px;border-radius:14px;border:1px solid var(--line);background:rgba(243,247,244,.05);padding:14px;font-size:16px;resize:vertical}
+label{font-weight:600}
+.verdict{border-radius:18px;padding:16px;display:grid;gap:8px}
+.v-green{background:rgba(43,211,138,.12);border:1px solid var(--mint)}
+.v-orange{background:rgba(245,184,61,.12);border:1px solid var(--gold)}
+.v-red{background:rgba(255,138,107,.12);border:1px solid var(--coral)}
+.verdict ul{margin:0;padding-left:20px}
+.foot{color:var(--mute);font-size:13px;margin-top:26px;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.glow{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo"><i><svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="none" stroke="#07110D" stroke-width="2.5"/><line x1="5" y1="17" x2="25" y2="17" stroke="#0B7A4B" stroke-width="3" stroke-linecap="round"/><circle cx="15" cy="10.5" r="3" fill="#F5B83D"/></svg></i>Unshaken</div>
+  <div class="free">No sign-up · No subscription<br><span id="reset"></span></div>
+</header>
+<nav aria-label="Sections">
+  <a href="#drop" data-v="drop">Today's Drop</a>
+  <a href="#board" data-v="board">Board</a>
+  <a href="#check" data-v="check">Check a deal</a>
+</nav>
+
+<section id="v-drop">
+  <div class="story" aria-roledescription="story">
+    <div class="glow" id="glow"></div>
+    <div class="bars" id="bars"></div>
+    <button class="tap l" id="prev" aria-label="Previous story"></button>
+    <button class="tap r" id="next" aria-label="Next story"></button>
+    <div class="sbody" id="sbody" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="v-board" hidden>
+  <h2 style="font-size:30px;margin-top:18px" id="btitle">Open doors, sorted by deadline</h2>
+  <p class="sub" style="margin:6px 0 0">Every item links to its official page. Free to apply. Nothing here asks you for money.</p>
+  <div class="chips" id="chips"></div>
+  <div id="list"></div>
+</section>
+
+<section id="v-check" hidden>
+  <div class="panel">
+    <h2 style="font-size:28px">Check a deal before you pay anything</h2>
+    <p class="sub" style="margin:0">Paste the message, the link or the "testimony" exactly as you got it. You get a verdict in seconds.</p>
+    <label for="deal">The deal</label>
+    <textarea id="deal" placeholder="e.g. Stream for 2hrs daily, earn $2 a day paid in USDT. Only for females. $10 update to unlock withdrawal."></textarea>
+    <div id="imgrow" hidden><label for="shot">Or add a screenshot</label><br><input type="file" id="shot" accept="image/*"></div>
+    <div class="acts"><button class="btn go" id="run">Check it</button><button class="btn" id="example">Try the Product Tube case</button></div>
+    <div id="out" aria-live="polite"></div>
+  </div>
+</section>
+
+<p class="foot" id="foot">Rates are official CBN figures with their dates shown. Items marked "confirm" are expected dates, so open the official page before you rely on them. Some steps may later include clearly labelled partner links. Unshaken never charges you to apply.</p>
+</div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+let ITEMS=[],RATES=null,UPDATED="";
+
+/* ---------- views ---------- */
+const views=["drop","board","check"];
+function show(){const v=views.includes(location.hash.slice(1))?location.hash.slice(1):"drop";
+  views.forEach(n=>{$("#v-"+n).hidden=n!==v});
+  document.querySelectorAll("nav a").forEach(a=>{if(a.dataset.v===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});}
+addEventListener("hashchange",show);
+
+/* ---------- time ---------- */
+const pad=n=>String(n).padStart(2,"0");
+function left(iso){const s=Math.max(0,Math.floor((new Date(iso)-Date.now())/1000));return{d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60,total:s}}
+function dueLabel(it){if(it.rolling)return["Always open","open"];const l=left(it.due);
+  if(it.opens)return l.total?["Opens in "+l.d+"d","open"]:["Open now","open"];
+  if(!l.total)return["Check status","shut"];return[l.d<1?"Under 24h left":l.d+" days left",""]}
+
+/* ---------- board ---------- */
+let cat=store.get("u_cat","All");const saved=new Set(store.get("u_saved",[]));
+function board(){
+  const cats=["All","Go","Earn","Learn","Grow","Saved"];
+  $("#chips").innerHTML=cats.map(c=>`<button aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
+  const rank=it=>it.rolling?9e15:(left(it.due).total||8e15);
+  const list=ITEMS.filter(it=>cat==="All"||(cat==="Saved"?saved.has(it.id):it.cat===cat)).sort((a,b)=>rank(a)-rank(b));
+  $("#list").innerHTML=list.length?list.map(it=>{const[t,c]=dueLabel(it);return`<article class="card">
+    <div class="row"><span class="tag">${it.cat}</span><span class="due ${c}">${t}</span></div>
+    <h3>${esc(it.title)}</h3><p>${esc(it.get)}</p>
+    <p><strong>Who:</strong> ${esc(it.who)}</p>
+    ${it.rolling?"":`<p><strong>Deadline:</strong> ${esc(it.dueText)}</p>`}
+    ${it.flag?`<div class="note">Confirm: ${esc(it.flag)}</div>`:""}
+    <details><summary>${it.steps.length} steps</summary><ol>${it.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol></details>
+    <div class="acts"><a class="btn go" href="${it.link}" target="_blank" rel="noopener">Official page</a>
+    <button class="btn" data-save="${it.id}">${saved.has(it.id)?"Saved ✓":"Save"}</button>
+    <button class="btn" data-share="${it.id}">Copy to share</button></div></article>`}).join(""):`<p class="empty">Nothing saved yet. Tap Save on any card.</p>`;
+}
+$("#chips").addEventListener("click",e=>{const c=e.target.dataset.c;if(!c)return;cat=c;store.set("u_cat",c);board()});
+$("#list").addEventListener("click",async e=>{const s=e.target.dataset.save,sh=e.target.dataset.share;
+  if(s){saved.has(s)?saved.delete(s):saved.add(s);store.set("u_saved",[...saved]);board()}
+  if(sh){const it=ITEMS.find(i=>i.id===sh);const txt=`${it.title}\n${it.get}\nDeadline: ${it.rolling?"Always open":it.dueText}\nOfficial page: ${it.link}\nFree to apply. Checked by Unshaken.`;
+    try{await navigator.clipboard.writeText(txt);e.target.textContent="Copied ✓"}catch(err){e.target.textContent="Copy blocked"}}});
+
+/* ---------- drop ---------- */
+let soon=null;const pickSoon=()=>ITEMS.filter(i=>!i.rolling&&!i.opens&&left(i.due).total).sort((a,b)=>new Date(a.due)-new Date(b.due))[0];
+const STORIES=[
+ {glow:"var(--mint)",html:()=>{const u=RATES.usd,g=RATES.gbp,f=n=>"₦"+Math.round(n).toLocaleString("en-US"),dt=s=>new Date(s+"T12:00:00Z").toLocaleDateString("en-GB",{day:"numeric",month:"short"});return`<span class="kick">The dollar today</span>
+   <div><div class="big">${f(u.ngn)}</div><div class="sub">per $1 · official ${esc(u.source)}, ${dt(u.date)}</div></div>
+   <div class="tiles"><div class="tile"><span class="sub">£1 pound</span><strong>${f(g.ngn)}</strong><span class="sub">${esc(g.source)}, ${dt(g.date)}</span></div>
+   <div class="tile"><span class="sub">$5 a day is</span><strong style="color:var(--gold)">${f(u.ngn*5)}</strong><span class="sub">at that rate</span></div></div>
+   <p class="lead">Five dollars a day changes a month. Story 4 shows honest ways to earn it.</p>
+   <div class="cta"><a class="btn" href="#board">See all doors</a></div>`}},
+ {glow:"var(--gold)",live:true,html:()=>{if(!soon)return`<span class="kick">Closing soon</span><p class="lead">New deadlines are being checked. See the Board.</p>`;const l=left(soon.due);return`<span class="kick" style="color:var(--gold)">Closing first · ${soon.cat}</span>
+   <h2 style="font-size:30px">${esc(soon.title)}</h2><p class="sub" style="margin:0">${esc(soon.get)}</p>
+   <div class="clock">${[[l.d,"days"],[l.h,"hrs"],[l.m,"min"],[l.s,"sec"]].map(([v,u])=>`<div><b>${pad(v)}</b><small>${u}</small></div>`).join("")}</div>
+   <span class="badge">✓ Official page linked · Free to apply · ${soon.steps.length} steps</span>
+   <div class="cta"><a class="btn gold" href="${soon.link}" target="_blank" rel="noopener">Open official page</a></div>`}},
+ {glow:"var(--mint)",html:()=>{const g=ITEMS.find(i=>i.id==="gates");return`<span class="kick">Big one · Go</span>
+   <h2 style="font-size:32px">Gates Cambridge: full-cost Master's or PhD funding.</h2>
+   <p class="sub" style="margin:0">${esc(g.dueText)}. Check which date your course uses.</p>
+   <ol style="margin:0;padding-left:20px;color:#CFE0D6">${g.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
+   <div class="cta"><a class="btn go" href="${g.link}" target="_blank" rel="noopener">Open official page</a></div>`}},
+ {glow:"var(--mint)",html:()=>`<span class="kick">Earn · paid in dollars</span>
+   <h2 style="font-size:32px">AI teams pay people to rate and write answers. No fee, ever.</h2>
+   <div class="tiles"><div class="tile"><strong>CrowdGen</strong><span class="sub">200 countries · monthly pay</span></div><div class="tile"><strong>Mindrift</strong><span class="sub">Open to Nigeria · tests first</span></div></div>
+   <p class="sub" style="margin:0">If anyone asks you to pay to "unlock" these, it's not them.</p>
+   <div class="cta"><a class="btn" href="#board" data-cat="Earn">See Earn doors</a></div>`},
+ {glow:"var(--coral)",html:()=>`<span class="kick" style="color:var(--coral)">Scam watch</span>
+   <h2 style="font-size:34px">"Product Tube" streaming for USDT? That's not Product Tube.</h2>
+   <div class="warn"><span>The real Product Tube pays Amazon gift cards for shopping videos.</span><span>A copy using its name asks women to "stream 2 hours", pays in USDT, then wants a $10 "update".</span><span>A fee to unlock your own money is the oldest trick there is.</span></div>
+   <div class="cta"><a class="btn" href="#check">Check a deal yourself</a></div>`}
+];
+let idx=0,start=Date.now();const DUR=8000;
+function paint(){const st=STORIES[idx];$("#sbody").innerHTML=st.html();
+  $("#glow").style.background=`radial-gradient(120% 55% at 50% 0%, color-mix(in srgb, ${st.glow} 26%, transparent), transparent 65%)`;}
+function go(n){idx=Math.max(0,Math.min(STORIES.length-1,n));start=Date.now();paint()}
+$("#prev").onclick=()=>go(idx-1);$("#next").onclick=()=>go(idx+1);
+$("#sbody").addEventListener("click",e=>{const c=e.target.dataset.cat;if(c){cat=c;board()}});
+function tick(){const el=Date.now()-start;
+  if(!$("#v-drop").hidden&&el>=DUR&&idx<STORIES.length-1)go(idx+1);
+  document.querySelectorAll("#bars b").forEach((b,i)=>b.style.width=(i<idx?100:i>idx?0:Math.min(100,(Date.now()-start)/DUR*100))+"%");
+  if(STORIES[idx].live)paint();
+  const d=new Date(),mid=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1),r=Math.floor((mid-d)/1000);
+  $("#reset").textContent="New drop in "+pad(Math.floor(r/3600))+":"+pad(Math.floor(r%3600/60))+":"+pad(r%60);}
+
+/* ---------- check ---------- */
+const RULES=[
+ [/\b(fee|pay to|payment to (join|unlock)|registration (fee|money)|activation|processing fee)\b/i,"Asks you to pay before you earn","red"],
+ [/\b(update|upgrade|unlock|recharge|top.?up|deposit)\b/i,"Wants money to 'update', 'upgrade' or unlock withdrawals","red"],
+ [/\b(usdt|trc20|crypto|bitcoin|btc|wallet address)\b/i,"Pays only in crypto, which is hard to trace or reverse","orange"],
+ [/\b(guaranteed|100%|risk.?free|no experience.*\$\d{2,})\b/i,"Promises guaranteed income","orange"],
+ [/\$\s?\d+\s*(daily|a day|per day)|daily (pay|income)/i,"Fixed daily dollar pay for simple tasks","orange"],
+ [/\b(only for (females|ladies|women|girls)|females only)\b/i,"Odd eligibility with no clear reason (could also be unsafe)","orange"],
+ [/\b(agent|whatsapp|telegram|dm me|inbox me)\b/i,"Runs through a chat 'agent', not an official site","orange"],
+ [/\b(refer|invite \d+|bring \d+ friends|downline)\b/i,"Earnings depend on recruiting others","red"],
+ [/\b(stream|watch videos|like videos|rate products)\b.*\b(earn|\$)/i,"Pays for watching, liking or streaming, a common task-scam hook","orange"]
+];
+function local(t){const flags=RULES.filter(([r])=>r.test(t)).map(([,m,l])=>({m,l}));
+  const red=flags.filter(f=>f.l==="red").length,v=red||flags.length>=3?"red":flags.length?"orange":"green";
+  const sum={red:"Too many warning signs. Do not pay anything.",orange:"Hold. Some warning signs; verify before you go further.",green:"No common warning signs found in this text. Still check the official site."}[v];
+  return{verdict:v,summary:sum,flags:flags.map(f=>f.m),next:["Find the company's own website and check the offer is listed there","Never pay a fee, 'update' or deposit to receive money you earned","Search the exact name plus the word scam before you sign up"]};}
+function render(r,src){const icon={green:"🟢",orange:"🟠",red:"🔴"}[r.verdict]||"🟠";
+  $("#out").innerHTML=`<div class="verdict v-${esc(r.verdict)}"><h3 style="font-size:22px">${icon} ${esc(r.summary)}</h3>
+   ${r.flags&&r.flags.length?`<strong>Warning signs</strong><ul>${r.flags.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
+   <strong>What to do</strong><ul>${(r.next||[]).map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+   <span class="sub">${esc(src)}</span></div>`;}
+$("#imgrow").hidden=false;
+const toDataURL=f=>new Promise((ok,no)=>{if(!f)return ok(null);if(f.size>1.5e6)return no(new Error("big"));const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)});
+$("#example").onclick=()=>{$("#deal").value="Product Tube is the name. If she can stream for 2hrs daily, video streaming. $2 daily, for 7 days is $14. Withdrawal paid in USDT-TRC20. Only for females sha. $10 update needed.";};
+$("#run").onclick=async()=>{const t=$("#deal").value.trim().slice(0,4000);const file=$("#shot").files[0];
+  if(!t&&!file){$("#out").innerHTML='<p class="sub">Paste the deal first.</p>';return}
+  const base=local(t);render(base,"Quick check done. Asking our AI for a deeper look…");
+  try{const image=await toDataURL(file).catch(()=>null);
+    const res=await fetch("/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t,image})});
+    if(!res.ok)throw new Error(res.status);const r=await res.json();
+    if(r&&r.verdict)render(r,"Checked with AI. Always confirm on the official site.");else render(base,"Quick check done on this phone.");
+  }catch(e){render(base,"Quick check done on this phone.")}};
+$("#bars").innerHTML="";
+fetch("/data/listings.json").then(r=>r.json()).then(d=>{ITEMS=d.items;RATES=d.rates;UPDATED=d.updated;soon=pickSoon();
+  $("#btitle").textContent=ITEMS.length+" open doors, sorted by deadline";
+  $("#bars").innerHTML=STORIES.map(()=>"<span><b></b></span>").join("");
+  board();show();paint();tick();setInterval(tick,500);
+}).catch(()=>{$("#sbody").innerHTML='<p class="sub">Could not load today\'s listings. Refresh to try again.</p>';show()});
+}
+</script>
+</body>
+</html>

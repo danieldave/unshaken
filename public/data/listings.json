@@ -1,0 +1,338 @@
+{
+ "updated": "2026-11-22",
+ "rates": {
+  "usd": {
+   "ngn": 1358.09,
+   "date": "2026-11-17",
+   "source": "CBN NFEM close"
+  },
+  "gbp": {
+   "ngn": 1790.78,
+   "date": "2026-11-13",
+   "source": "CBN"
+  }
+ },
+ "items": [
+  {
+   "id": "tudelft",
+   "cat": "Go",
+   "title": "TU Delft Justus & Louise van Effen Excellence Scholarship",
+   "due": "2026-12-01T22:59:00Z",
+   "dueText": "1 Dec 2026",
+   "get": "Full first-year tuition plus a living-cost contribution for a Master's at TU Delft, Netherlands.",
+   "who": "Top non-EU applicants to an eligible TU Delft MSc.",
+   "steps": [
+    "Pick an eligible TU Delft MSc programme",
+    "Submit your MSc application before 1 Dec 2026, 23:59 CET",
+    "Complete the scholarship section with your motivation",
+    "Keep transcripts and CV ready for selection"
+   ],
+   "link": "https://www.tudelft.nl/en/education",
+   "flag": "Date from a scholarship tracker that checked official pages; confirm on TU Delft's site."
+  },
+  {
+   "id": "leiden",
+   "cat": "Go",
+   "title": "Leiden University Excellence Scholarship (LExS)",
+   "due": "2026-12-01T22:59:00Z",
+   "dueText": "1 Dec 2026",
+   "get": "€10,000 to €19,000 off tuition for a Leiden Master's.",
+   "who": "Excellent non-EU Master's applicants.",
+   "steps": [
+    "Choose a Leiden Master's",
+    "Apply for the programme before 1 Dec 2026",
+    "Tick the LExS option in your application",
+    "Upload your strongest transcript and motivation"
+   ],
+   "link": "https://www.universiteitleiden.nl/en/scholarships",
+   "flag": "Confirm the date on Leiden's scholarship page."
+  },
+  {
+   "id": "clarendon",
+   "cat": "Go",
+   "title": "Clarendon Scholarship, University of Oxford",
+   "due": "2026-12-02T12:00:00Z",
+   "dueText": "2 Dec 2026 – 27 Jan 2027 (by course)",
+   "get": "Full course fees plus a living grant at Oxford. Around 140 new awards a year.",
+   "who": "All graduate applicants to degree-bearing courses. No separate form.",
+   "steps": [
+    "Find your course's December or January deadline on its Oxford page",
+    "Apply to the course by that deadline, 12:00 noon UK",
+    "References must arrive by the same deadline",
+    "You are considered automatically"
+   ],
+   "link": "https://www.ox.ac.uk/admissions/graduate/fees-and-funding/funding/clarendon"
+  },
+  {
+   "id": "gates",
+   "cat": "Go",
+   "title": "Gates Cambridge Scholarship",
+   "due": "2026-12-08T23:59:00Z",
+   "dueText": "8 Dec 2026 or 6 Jan 2027 (by course)",
+   "get": "Full-cost Master's or PhD funding at the University of Cambridge.",
+   "who": "Citizens of any country outside the UK; non-US applicants use the international round.",
+   "steps": [
+    "Choose an eligible Cambridge course",
+    "Check whether its funding deadline is 8 Dec 2026 or 6 Jan 2027",
+    "Complete the Gates section inside the Cambridge application",
+    "Arrange the extra Gates reference"
+   ],
+   "link": "https://www.gatescambridge.org/apply/"
+  },
+  {
+   "id": "waaw",
+   "cat": "Go",
+   "title": "WAAW Foundation STEM Scholarship for African women",
+   "due": "2026-12-18T23:59:00Z",
+   "dueText": "18 Dec 2026",
+   "get": "A one-time US$500 award, plus a STEM community and outreach work.",
+   "who": "Female undergraduates of African origin studying STEM in Africa. Medicine and nursing are excluded; pharmacy is in.",
+   "steps": [
+    "Confirm you're enrolled in a STEM bachelor's in Africa",
+    "Get a signed copy of your current transcript",
+    "Write about your need and your plans",
+    "Apply on the official WAAW page"
+   ],
+   "link": "https://waawfoundation.org/scholarship/",
+   "flag": "Closing date reported by a listings site; confirm on WAAW's page."
+  },
+  {
+   "id": "erasmus",
+   "cat": "Go",
+   "title": "Erasmus Mundus Joint Masters",
+   "due": "2027-01-10T23:59:00Z",
+   "dueText": "Mostly Dec 2026 – Jan 2027 (by programme)",
+   "get": "EU-funded Master's across several European universities. Top applicants get full scholarships.",
+   "who": "Students worldwide.",
+   "steps": [
+    "Browse the official Erasmus Mundus catalogue",
+    "Pick up to three programmes that fit your degree",
+    "Note each programme's own scholarship deadline",
+    "Apply on each programme's website"
+   ],
+   "link": "https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters"
+  },
+  {
+   "id": "uva",
+   "cat": "Go",
+   "title": "Amsterdam Merit Scholarship (University of Amsterdam)",
+   "due": "2027-01-15T22:59:00Z",
+   "dueText": "15 Jan 2027 (most faculties)",
+   "get": "Faculty awards for a UvA Master's, e.g. €26,125 in the Faculty of Science.",
+   "who": "Outstanding non-EU/EEA students, typically top 10% of their class.",
+   "steps": [
+    "Choose a UvA Master's",
+    "Apply before 15 Jan 2027",
+    "Say yes to UvA scholarship consideration on the form",
+    "Check your faculty page for amount and extras"
+   ],
+   "link": "https://www.uva.nl/en"
+  },
+  {
+   "id": "si",
+   "cat": "Go",
+   "title": "Swedish Institute Scholarship for Global Professionals",
+   "due": "2027-01-15T22:59:00Z",
+   "dueText": "University by 15 Jan 2027 · SI form 8–24 Feb 2027",
+   "get": "Full tuition, SEK 12,000 a month, travel grant and insurance for a Swedish Master's.",
+   "who": "Citizens of 34 countries including Nigeria, Kenya and South Africa (Ghana isn't on the list). Needs work and leadership experience.",
+   "steps": [
+    "Apply to eligible Swedish Master's on University Admissions by 15 Jan 2027",
+    "Gather proof of work and leadership experience",
+    "Submit the SI scholarship form between 8 and 24 Feb 2027",
+    "Results on 22 Apr 2027"
+   ],
+   "link": "https://si.se/en/apply/scholarships/swedish-institute-scholarships-for-global-professionals/"
+  },
+  {
+   "id": "sh",
+   "cat": "Go",
+   "title": "Stipendium Hungaricum (Hungary)",
+   "due": "2027-01-15T13:00:00Z",
+   "dueText": "Expected 15 Jan 2027",
+   "get": "Free tuition, monthly stipend, housing support and health insurance in Hungary. Bachelor's to PhD.",
+   "who": "Citizens of about 80 partner countries.",
+   "steps": [
+    "Check your country is a partner on the official site",
+    "Pick up to two programmes",
+    "Apply on the official portal",
+    "Your home country's partner body nominates you"
+   ],
+   "link": "https://stipendiumhungaricum.hu/",
+   "flag": "Expected date based on last year's cycle. Confirm the portal is open."
+  },
+  {
+   "id": "nl",
+   "cat": "Go",
+   "title": "NL Scholarship (formerly Holland Scholarship)",
+   "due": "2027-02-01T22:59:00Z",
+   "dueText": "1 Feb or 1 May 2027 (by university)",
+   "get": "€5,000 for your first year of a Bachelor's or Master's in the Netherlands.",
+   "who": "Non-EEA students with no previous Dutch degree.",
+   "steps": [
+    "See the 2027–28 list of participating universities",
+    "Apply for your programme",
+    "Apply for the NL Scholarship at that university",
+    "Meet that university's own deadline"
+   ],
+   "link": "https://www.studyinnl.org/finances/nl-scholarship"
+  },
+  {
+   "id": "csc",
+   "cat": "Go",
+   "title": "Chinese Government Scholarship",
+   "due": "2027-03-31T23:59:00Z",
+   "dueText": "Jan – Apr 2027 (by embassy or university)",
+   "get": "Tuition, housing, monthly stipend and insurance in China. Bachelor's to PhD.",
+   "who": "Non-Chinese citizens. Apply through your embassy or straight to a university.",
+   "steps": [
+    "Choose your route: embassy (Type A) or university (Type B)",
+    "Find that route's deadline",
+    "Apply on the Campus China system",
+    "Send documents the route asks for"
+   ],
+   "link": "https://www.campuschina.org/",
+   "flag": "Deadlines differ by route; check yours."
+  },
+  {
+   "id": "mcf",
+   "cat": "Go",
+   "title": "Mastercard Foundation Scholars Program",
+   "due": "2027-01-06T23:59:00Z",
+   "dueText": "Varies by university (Cambridge: Dec 2026 / Jan 2027)",
+   "get": "Full scholarships with laptop, travel, mentorship and leadership training.",
+   "who": "Young Africans with strong grades and financial need.",
+   "steps": [
+    "Pick a partner university still open",
+    "Apply for admission first",
+    "Complete the Scholars Program form",
+    "Show need and community impact"
+   ],
+   "link": "https://mastercardfdn.org/",
+   "flag": "Many partner universities have closed for 2027; check each one."
+  },
+  {
+   "id": "tef",
+   "cat": "Grow",
+   "title": "Tony Elumelu Foundation Entrepreneurship Programme",
+   "due": "2027-01-01T00:00:00Z",
+   "dueText": "Expected to open 1 Jan 2027",
+   "opens": true,
+   "get": "US$5,000 non-refundable seed capital, training and mentorship.",
+   "who": "Entrepreneurs in all 54 African countries.",
+   "steps": [
+    "Write a one-page plan now: problem, customer, money",
+    "Create a TEFConnect account when applications open",
+    "Apply early; the 2026 round closed on 1 Mar",
+    "Finish the training if selected"
+   ],
+   "link": "https://www.tonyelumelufoundation.org/",
+   "flag": "Opening date expected from past cycles."
+  },
+  {
+   "id": "crowdgen",
+   "cat": "Earn",
+   "title": "CrowdGen by Appen: AI training tasks",
+   "rolling": true,
+   "get": "Paid project work for AI teams: rating, recording, transcribing. Paid monthly by PayPal, Payoneer and others.",
+   "who": "Contributors in 200 countries. Projects set their own location rules.",
+   "steps": [
+    "Apply to a project opening on crowdgen.com",
+    "Set up your profile and payment method",
+    "Pass the project qualification",
+    "Never pay anyone to join; CrowdGen charges no fee"
+   ],
+   "link": "https://crowdgen.com/"
+  },
+  {
+   "id": "mindrift",
+   "cat": "Earn",
+   "title": "Mindrift: AI tutoring and evaluation",
+   "rolling": true,
+   "get": "Paid tasks writing and checking AI answers. Toloka's older tasks moved here.",
+   "who": "Open widely, including Nigeria. Higher tiers need subject expertise.",
+   "steps": [
+    "Sign up on the official site",
+    "Pick your field",
+    "Pass the qualification test",
+    "Withdraw to a supported method"
+   ],
+   "link": "https://mindrift.ai/"
+  },
+  {
+   "id": "mercor",
+   "cat": "Earn",
+   "title": "Mercor: expert AI work",
+   "rolling": true,
+   "get": "Contract roles for professionals, paid weekly through Stripe to your bank.",
+   "who": "Nigeria is a supported payment country; each listing sets its own countries.",
+   "steps": [
+    "Create a profile and upload your CV",
+    "Apply to a listing that matches your field",
+    "Do the AI interview",
+    "Real emails end in @mercor.com"
+   ],
+   "link": "https://www.mercor.com/"
+  },
+  {
+   "id": "cs50",
+   "cat": "Learn",
+   "title": "Harvard CS50x: Introduction to Computer Science",
+   "rolling": true,
+   "get": "Harvard's famous course, free online, with a free certificate when you finish.",
+   "who": "Anyone, any background.",
+   "steps": [
+    "Open the course page",
+    "Watch week 0",
+    "Submit each problem set",
+    "Claim your free certificate"
+   ],
+   "link": "https://cs50.harvard.edu/x/"
+  },
+  {
+   "id": "fcc",
+   "cat": "Learn",
+   "title": "freeCodeCamp certifications",
+   "rolling": true,
+   "get": "Free web development, data and Python certifications.",
+   "who": "Anyone with a browser.",
+   "steps": [
+    "Make a free account",
+    "Start Responsive Web Design",
+    "Build the required projects",
+    "Claim each certification"
+   ],
+   "link": "https://www.freecodecamp.org/"
+  },
+  {
+   "id": "alx",
+   "cat": "Learn",
+   "title": "ALX All Access Lite",
+   "rolling": true,
+   "get": "Free AI Starter Kit. Full programmes cost US$5 a month on All Access.",
+   "who": "Learners across Africa.",
+   "steps": [
+    "Register on ALX",
+    "Choose All Access Lite (free)",
+    "Finish the AI Starter Kit",
+    "Upgrade only if you want more"
+   ],
+   "link": "https://www.alxafrica.com/"
+  },
+  {
+   "id": "coursera",
+   "cat": "Learn",
+   "title": "Coursera Financial Aid (e.g. Google certificates)",
+   "rolling": true,
+   "get": "Paid certificates for free when your financial aid request is approved.",
+   "who": "Learners who can't afford the fee.",
+   "steps": [
+    "Open the course you want",
+    "Click Financial aid available",
+    "Answer the questions honestly",
+    "Start the course while you wait"
+   ],
+   "link": "https://www.coursera.org/"
+  }
+ ]
+}
