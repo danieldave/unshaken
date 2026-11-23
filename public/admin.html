@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Unshaken admin</title>
+<style>
+:root{color-scheme:dark;--bg:#07110D;--card:#0F1D17;--line:rgba(243,247,244,.13);--ink:#F3F7F4;--mute:#A9BDB2;--mint:#2BD38A;--gold:#F5B83D;--coral:#FF8A6B}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:24px;margin:0 0 12px}
+input,button{font:inherit;color:inherit}
+input{min-height:44px;border-radius:12px;border:1px solid var(--line);background:#132219;padding:0 12px;width:100%}
+button{min-height:44px;border-radius:12px;border:1px solid var(--line);background:transparent;padding:0 14px;font-weight:600;cursor:pointer}
+.go{background:var(--mint);color:var(--bg);border:0}.no{background:var(--coral);color:var(--bg);border:0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px;display:grid;gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.mute{color:var(--mute);font-size:13px}
+.v{font-weight:700}.v.red{color:var(--coral)}.v.orange{color:var(--gold)}.v.green{color:var(--mint)}
+table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid var(--line);text-align:left}td.n{text-align:right}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Unshaken admin</h1>
+<form id="login" class="row"><input id="tok" type="password" placeholder="Admin token" autocomplete="current-password" aria-label="Admin token" style="flex:1"><button class="go">Open</button></form>
+<div class="tabs" id="tabs" hidden><button data-v="proofs" aria-pressed="true">Proofs to review</button><button data-v="radar">Scam Radar</button><button data-v="captains">Captains</button></div>
+<div id="out"></div>
+</div>
+<script>
+{
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let tok = sessionStorage.getItem("u_admin") || "", view = "proofs";
+const call = (q, body) => fetch("/api/admin" + q, { method: body ? "POST" : "GET", headers: { "x-admin-token": tok, "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined }).then(async r => { if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.status); return r.json(); });
+async function load() {
+  $("#out").innerHTML = '<p class="mute">Loading…</p>';
+  try {
+    const { items } = await call("?view=" + view);
+    $("#tabs").hidden = false; $("#login").hidden = true;
+    if (view === "proofs") $("#out").innerHTML = items.length ? items.map(p => `<div class="card"><div class="row"><strong>${esc(p.first_name)}, ${esc(p.country)}</strong><span class="mute">${new Date(p.created_at).toLocaleString()}</span></div>
+      <div>${esc(p.programme)}${p.year ? " · " + esc(p.year) : ""}</div>${p.contact ? `<div class="mute">Contact: ${esc(p.contact)}</div>` : ""}
+      <div class="row">${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener" style="color:var(--mint)">Open award letter (link lasts 10 min)</a>` : '<span class="mute">File link unavailable</span>'}
+      <span><button class="go" data-a="approve" data-id="${p.id}">Approve</button> <button class="no" data-a="reject" data-id="${p.id}">Reject</button></span></div>
+      <div class="mute">Check: official letterhead, the person's name, the programme, the date. If in doubt, reject or contact them.</div></div>`).join("") : '<p class="mute">Nothing waiting. 🎉</p>';
+    if (view === "radar") $("#out").innerHTML = items.length ? items.map(r => `<div class="card"><div class="row"><span class="v ${esc(r.verdict)}">${esc(r.verdict.toUpperCase())}</span><span class="mute">${new Date(r.created_at).toLocaleString()} · ${esc(r.source)}</span></div><div>${esc(r.snippet)}</div><div class="mute">${(r.flags || []).map(esc).join(" · ")}</div></div>`).join("") : '<p class="mute">No checks yet.</p>';
+    if (view === "captains") $("#out").innerHTML = items.length ? `<table><thead><tr><th>Code</th><th>Name</th><th>Group</th><th>Visits</th><th>Shares</th></tr></thead><tbody>${items.map(c => `<tr><td>${esc(c.code)}</td><td>${esc(c.display_name)}</td><td>${esc(c.group_name)}</td><td class="n">${c.visits}</td><td class="n">${c.shares}</td></tr>`).join("")}</tbody></table>` : '<p class="mute">No captains yet.</p>';
+  } catch (e) { $("#out").innerHTML = `<p style="color:var(--coral)">${esc(e.message)}</p>`; $("#login").hidden = false; }
+}
+$("#login").onsubmit = e => { e.preventDefault(); tok = $("#tok").value.trim(); sessionStorage.setItem("u_admin", tok); load(); };
+$("#tabs").onclick = e => { const v = e.target.dataset.v; if (!v) return; view = v; document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v)); load(); };
+$("#out").onclick = async e => { const a = e.target.dataset.a; if (!a) return; e.target.disabled = true; try { await call("", { action: a, id: e.target.dataset.id }); load(); } catch (err) { e.target.textContent = err.message; } };
+if (tok) load();
+}
+</script>
+</body>
+</html>
