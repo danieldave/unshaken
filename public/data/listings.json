@@ -28,7 +28,13 @@
     "Keep transcripts and CV ready for selection"
    ],
    "link": "https://www.tudelft.nl/en/education",
-   "flag": "Date from a scholarship tracker that checked official pages; confirm on TU Delft's site."
+   "flag": "Date from a scholarship tracker that checked official pages; confirm on TU Delft's site.",
+   "elig": {
+    "levels": [
+     "master"
+    ],
+    "exclude": "EU"
+   }
   },
   {
    "id": "leiden",
@@ -45,7 +51,13 @@
     "Upload your strongest transcript and motivation"
    ],
    "link": "https://www.universiteitleiden.nl/en/scholarships",
-   "flag": "Confirm the date on Leiden's scholarship page."
+   "flag": "Confirm the date on Leiden's scholarship page.",
+   "elig": {
+    "levels": [
+     "master"
+    ],
+    "exclude": "EU"
+   }
   },
   {
    "id": "clarendon",
@@ -61,7 +73,13 @@
     "References must arrive by the same deadline",
     "You are considered automatically"
    ],
-   "link": "https://www.ox.ac.uk/admissions/graduate/fees-and-funding/funding/clarendon"
+   "link": "https://www.ox.ac.uk/admissions/graduate/fees-and-funding/funding/clarendon",
+   "elig": {
+    "levels": [
+     "master",
+     "phd"
+    ]
+   }
   },
   {
    "id": "gates",
@@ -77,7 +95,16 @@
     "Complete the Gates section inside the Cambridge application",
     "Arrange the extra Gates reference"
    ],
-   "link": "https://www.gatescambridge.org/apply/"
+   "link": "https://www.gatescambridge.org/apply/",
+   "elig": {
+    "levels": [
+     "master",
+     "phd"
+    ],
+    "exclude": [
+     "GB"
+    ]
+   }
   },
   {
    "id": "waaw",
@@ -94,7 +121,18 @@
     "Apply on the official WAAW page"
    ],
    "link": "https://waawfoundation.org/scholarship/",
-   "flag": "Closing date reported by a listings site; confirm on WAAW's page."
+   "flag": "Closing date reported by a listings site; confirm on WAAW's page.",
+   "elig": {
+    "levels": [
+     "bachelor"
+    ],
+    "region": "AFRICA",
+    "gender": "female",
+    "fields": [
+     "stem"
+    ],
+    "student": true
+   }
   },
   {
    "id": "erasmus",
@@ -110,7 +148,12 @@
     "Note each programme's own scholarship deadline",
     "Apply on each programme's website"
    ],
-   "link": "https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters"
+   "link": "https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-individuals/students/erasmus-mundus-joint-masters",
+   "elig": {
+    "levels": [
+     "master"
+    ]
+   }
   },
   {
    "id": "uva",
@@ -126,7 +169,13 @@
     "Say yes to UvA scholarship consideration on the form",
     "Check your faculty page for amount and extras"
    ],
-   "link": "https://www.uva.nl/en"
+   "link": "https://www.uva.nl/en",
+   "elig": {
+    "levels": [
+     "master"
+    ],
+    "exclude": "EU"
+   }
   },
   {
    "id": "si",
@@ -142,7 +191,49 @@
     "Submit the SI scholarship form between 8 and 24 Feb 2027",
     "Results on 22 Apr 2027"
    ],
-   "link": "https://si.se/en/apply/scholarships/swedish-institute-scholarships-for-global-professionals/"
+   "link": "https://si.se/en/apply/scholarships/swedish-institute-scholarships-for-global-professionals/",
+   "elig": {
+    "levels": [
+     "master"
+    ],
+    "countries": [
+     "AM",
+     "AZ",
+     "BD",
+     "BY",
+     "BO",
+     "BR",
+     "CO",
+     "EC",
+     "EG",
+     "ET",
+     "GE",
+     "GT",
+     "ID",
+     "IQ",
+     "JO",
+     "KE",
+     "LR",
+     "MY",
+     "MX",
+     "MD",
+     "MA",
+     "NG",
+     "PE",
+     "PH",
+     "RW",
+     "SN",
+     "ZA",
+     "TZ",
+     "TH",
+     "UG",
+     "UA",
+     "UZ",
+     "VN",
+     "ZM"
+    ],
+    "minWork": 1.5
+   }
   },
   {
    "id": "sh",
@@ -159,7 +250,15 @@
     "Your home country's partner body nominates you"
    ],
    "link": "https://stipendiumhungaricum.hu/",
-   "flag": "Expected date based on last year's cycle. Confirm the portal is open."
+   "flag": "Expected date based on last year's cycle. Confirm the portal is open.",
+   "elig": {
+    "levels": [
+     "bachelor",
+     "master",
+     "phd"
+    ],
+    "partnerCheck": true
+   }
   },
   {
    "id": "nl",
@@ -175,7 +274,14 @@
     "Apply for the NL Scholarship at that university",
     "Meet that university's own deadline"
    ],
-   "link": "https://www.studyinnl.org/finances/nl-scholarship"
+   "link": "https://www.studyinnl.org/finances/nl-scholarship",
+   "elig": {
+    "levels": [
+     "bachelor",
+     "master"
+    ],
+    "exclude": "EU"
+   }
   },
   {
    "id": "csc",
@@ -192,7 +298,17 @@
     "Send documents the route asks for"
    ],
    "link": "https://www.campuschina.org/",
-   "flag": "Deadlines differ by route; check yours."
+   "flag": "Deadlines differ by route; check yours.",
+   "elig": {
+    "levels": [
+     "bachelor",
+     "master",
+     "phd"
+    ],
+    "exclude": [
+     "CN"
+    ]
+   }
   },
   {
    "id": "mcf",
@@ -209,7 +325,14 @@
     "Show need and community impact"
    ],
    "link": "https://mastercardfdn.org/",
-   "flag": "Many partner universities have closed for 2027; check each one."
+   "flag": "Many partner universities have closed for 2027; check each one.",
+   "elig": {
+    "levels": [
+     "bachelor",
+     "master"
+    ],
+    "region": "AFRICA"
+   }
   },
   {
    "id": "tef",
@@ -227,7 +350,13 @@
     "Finish the training if selected"
    ],
    "link": "https://www.tonyelumelufoundation.org/",
-   "flag": "Opening date expected from past cycles."
+   "flag": "Opening date expected from past cycles.",
+   "elig": {
+    "region": "AFRICA",
+    "goals": [
+     "business"
+    ]
+   }
   },
   {
    "id": "crowdgen",
@@ -242,7 +371,8 @@
     "Pass the project qualification",
     "Never pay anyone to join; CrowdGen charges no fee"
    ],
-   "link": "https://crowdgen.com/"
+   "link": "https://crowdgen.com/",
+   "elig": {}
   },
   {
    "id": "mindrift",
@@ -257,7 +387,8 @@
     "Pass the qualification test",
     "Withdraw to a supported method"
    ],
-   "link": "https://mindrift.ai/"
+   "link": "https://mindrift.ai/",
+   "elig": {}
   },
   {
    "id": "mercor",
@@ -272,7 +403,8 @@
     "Do the AI interview",
     "Real emails end in @mercor.com"
    ],
-   "link": "https://www.mercor.com/"
+   "link": "https://www.mercor.com/",
+   "elig": {}
   },
   {
    "id": "cs50",
@@ -287,7 +419,8 @@
     "Submit each problem set",
     "Claim your free certificate"
    ],
-   "link": "https://cs50.harvard.edu/x/"
+   "link": "https://cs50.harvard.edu/x/",
+   "elig": {}
   },
   {
    "id": "fcc",
@@ -302,7 +435,8 @@
     "Build the required projects",
     "Claim each certification"
    ],
-   "link": "https://www.freecodecamp.org/"
+   "link": "https://www.freecodecamp.org/",
+   "elig": {}
   },
   {
    "id": "alx",
@@ -317,7 +451,8 @@
     "Finish the AI Starter Kit",
     "Upgrade only if you want more"
    ],
-   "link": "https://www.alxafrica.com/"
+   "link": "https://www.alxafrica.com/",
+   "elig": {}
   },
   {
    "id": "coursera",
@@ -332,7 +467,99 @@
     "Answer the questions honestly",
     "Start the course while you wait"
    ],
-   "link": "https://www.coursera.org/"
+   "link": "https://www.coursera.org/",
+   "elig": {}
   }
- ]
+ ],
+ "regions": {
+  "EU": [
+   "AT",
+   "BE",
+   "BG",
+   "HR",
+   "CY",
+   "CZ",
+   "DK",
+   "EE",
+   "FI",
+   "FR",
+   "DE",
+   "GR",
+   "HU",
+   "IE",
+   "IT",
+   "LV",
+   "LT",
+   "LU",
+   "MT",
+   "NL",
+   "PL",
+   "PT",
+   "RO",
+   "SK",
+   "SI",
+   "ES",
+   "SE",
+   "IS",
+   "LI",
+   "NO",
+   "CH"
+  ],
+  "AFRICA": [
+   "DZ",
+   "AO",
+   "BJ",
+   "BW",
+   "BF",
+   "BI",
+   "CV",
+   "CM",
+   "CF",
+   "TD",
+   "KM",
+   "CG",
+   "CD",
+   "CI",
+   "DJ",
+   "EG",
+   "GQ",
+   "ER",
+   "SZ",
+   "ET",
+   "GA",
+   "GM",
+   "GH",
+   "GN",
+   "GW",
+   "KE",
+   "LS",
+   "LR",
+   "LY",
+   "MG",
+   "MW",
+   "ML",
+   "MR",
+   "MU",
+   "MA",
+   "MZ",
+   "NA",
+   "NE",
+   "NG",
+   "RW",
+   "ST",
+   "SN",
+   "SC",
+   "SL",
+   "SO",
+   "ZA",
+   "SS",
+   "SD",
+   "TZ",
+   "TG",
+   "TN",
+   "UG",
+   "ZM",
+   "ZW"
+  ]
+ }
 }

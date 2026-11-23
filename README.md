@@ -1,61 +1,77 @@
 # Unshaken
 
-Free, no-sign-up platform: a daily **Drop** (rates, closing-soon opportunities, scam watch), a **Board** of verified ways to earn, learn, grow and go abroad, and a **Check a deal** scam checker.
+A free, no-sign-up platform for verified ways to **earn, learn, grow and go abroad**, with a scam checker people can trust. Nobody registers, subscribes or pays. Personal answers stay on the visitor's own phone.
 
-Nobody registers, subscribes or pays. Saved items stay on the visitor's own phone.
+## Features
 
-## What's inside
+| Feature | What it does | Needs |
+|---|---|---|
+| **Today's Drop** | Five status-style stories: dollar rate, "doors for you", closing-first countdown, honest earning, scam watch | — |
+| **Board** | Listings sorted by deadline, each with official link, steps, Save, Copy to share | — |
+| **You qualify** | 6 questions (country, level, work, gender, field, student). The Board marks each door ✓ / check / not for you and puts yours first | — |
+| **Check a deal** | Instant on-phone check, then a deeper AI verdict; shows how many others checked the same message | AI (optional) · DB for the count |
+| **Scam Radar** | Every check is logged anonymously (phones, emails, links, wallets removed); weekly public summary on the Check page | DB |
+| **Application Sprint** | Plans each deadline backwards into daily tasks; WhatsApp reminder text; calendar file | — |
+| **Essay Coach** | Scores a statement of purpose on 6 panel criteria, with fixes and stronger sentences (never invents achievements) | AI |
+| **Winners (Proof Wall)** | Winners upload their award letter privately; only first name, country and award show, after you approve | DB |
+| **Campus Captains & OG Ladder** | Personal link; counts people brought in (one per phone) and shares; levels Starter → Connector → Captain → Gold OG. No money, ever | DB |
+| **7 languages** | English, Pidgin, French, Yoruba, Hausa, Igbo, Swahili. All non-English labelled beta; listings translated by AI once and cached | AI · DB for cache |
+| **Listen mode** | Reads the current screen aloud with the phone's own voices | — |
+| **Admin** | `/admin.html`: approve winners, read the radar, rank captains | DB + `ADMIN_TOKEN` |
 
-| Path | What it does |
-|---|---|
-| `public/index.html` | The whole app (Drop, Board, Check). No build step. |
-| `public/data/listings.json` | Rates + every listing. **This is the only file you edit day to day.** |
-| `api/check.js` | Scam-check API. Calls OpenAI with your key, which stays on the server. |
-| `scripts/check-listings.mjs` | Flags closed listings, ones closing within 7 days, stale rates, missing fields. |
-| `.github/workflows/listings.yml` | Runs that check daily and whenever the data changes. |
+Everything degrades gracefully: with no keys at all, the site still works (Drop, Board, You qualify, Sprint, quick scam check, listen).
 
-If the AI check is down or not configured, the page still gives every visitor a quick on-phone check. Nothing breaks.
+## Files
 
-## Deploy (about 10 minutes)
+```
+public/index.html          page shell and styles
+public/app.js              all app logic
+public/i18n.js             interface text in 7 languages (missing keys fall back to English)
+public/data/listings.json  rates, listings, eligibility rules  ← edit this daily
+public/admin.html          owner dashboard
+api/*.js                   server functions (check, radar, coach, translate, proof, captain, admin, health)
+api/_lib.js                shared helpers (not a route)
+supabase/schema.sql        database tables, all private (RLS on, no public policies)
+scripts/check-listings.mjs daily data checker (also runs in GitHub Actions)
+```
 
-1. Push this folder to your GitHub repo.
-2. On [vercel.com](https://vercel.com): **Add New → Project → Import** the repo. Framework preset: **Other**. Leave the build command empty.
-3. **Settings → Environment Variables**: add `OPENAI_API_KEY` (and `OPENAI_MODEL` if you want a different model). Redeploy.
-4. Open your site, go to **Check a deal**, tap **Try the Product Tube case**, then **Check it**. "Checked with AI" means the key works.
+## Setup (about 20 minutes)
 
-**Never** put the key in `index.html`, in a commit, or in chat. If it ever leaks, revoke it at platform.openai.com and make a new one.
+1. **Supabase**: create a free project at supabase.com → SQL Editor → paste `supabase/schema.sql` → Run. Copy the project URL and the **service_role** key from Project Settings → API.
+2. **GitHub**: push this folder to your repo.
+3. **Vercel**: Add New → Project → import the repo. Framework preset **Other**, no build command.
+4. **Vercel → Settings → Environment Variables** (see `.env.example`): `OPENAI_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_TOKEN` (a long random password). Redeploy.
+5. **Test**: visit `/api/health`. It should say `"ai":true,"db":true`. Then try Check a deal → "Try the Product Tube case".
 
-## Daily routine (about 10 minutes)
+Keys live only in Vercel. Never put them in code, commits or chat. If one leaks, rotate it immediately.
 
-1. The 5:34am scheduled draft arrives with today's rates, 3 closing-soon items, new finds and a scam warning.
-2. Approve the items you want.
-3. Update `public/data/listings.json`: rates and `updated` date, add approved items, remove closed ones.
-4. Run `npm run check`; it should end with "All good."
-5. Commit → Vercel redeploys automatically → paste the digest into your WhatsApp/Telegram channel.
+## Daily routine
+
+1. Read the 5:34am draft and approve items.
+2. Edit `public/data/listings.json`: `updated`, rates, new items, remove closed ones.
+3. `npm run check` until "All good."
+4. Commit; Vercel redeploys. Paste the digest into your channel.
+5. Weekly: open `/admin.html`, approve verified winners, read the radar for the next Scam Watch story.
 
 ## Listing format
 
 ```json
 {
-  "id": "short-unique-id",
-  "cat": "Go | Earn | Learn | Grow",
-  "title": "Official programme name",
-  "due": "2027-01-15T22:59:00Z",
-  "dueText": "15 Jan 2027",
-  "get": "What the person receives",
-  "who": "Who is eligible",
-  "steps": ["Step 1", "Step 2", "Step 3"],
-  "link": "https://official-site",
-  "flag": "Optional: why this still needs confirming"
+  "id": "short-unique-id", "cat": "Go | Earn | Learn | Grow",
+  "title": "Official name", "due": "2027-01-15T22:59:00Z", "dueText": "15 Jan 2027",
+  "get": "What they receive", "who": "Who is eligible",
+  "steps": ["Step 1", "Step 2", "Step 3"], "link": "https://official-site",
+  "flag": "Optional: why this needs confirming",
+  "elig": { "levels": ["master"], "exclude": "EU", "countries": ["NG"], "region": "AFRICA",
+            "gender": "female", "fields": ["stem"], "student": true, "minWork": 1.5, "partnerCheck": true }
 }
 ```
-
-Use `"rolling": true` (and no `due`) for always-open items, and `"opens": true` when `due` is an opening date.
+`"rolling": true` = always open (no `due`). `"opens": true` = `due` is the opening date. Leave `elig` empty (`{}`) for open-to-all. `exclude` takes a region name (`EU`, which includes EEA and Switzerland) or a list of country codes.
 
 ## House rules (what makes the ✓ mean something)
 
-- Official links only: the provider's own site, never a blog or an "agent".
-- No listing that asks for a fee to apply or unlock earnings.
+- Official links only. No "agents", no blogs as the source.
+- Nothing that asks for a fee to apply or to unlock earnings.
 - No VPN or location workarounds.
-- Partner (affiliate) links are always labelled.
-- No invented numbers, testimonials or results.
+- Partner links are always labelled.
+- No invented numbers, testimonials or winners. A winner shows only after you see their letter.
