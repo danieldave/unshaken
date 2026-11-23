@@ -17,6 +17,10 @@ A free, no-sign-up platform for verified ways to **earn, learn, grow and go abro
 | **Campus Captains & OG Ladder** | Personal link; counts people brought in (one per phone) and shares; levels Starter → Connector → Captain → Gold OG. No money, ever | DB |
 | **7 languages** | English, Pidgin, French, Yoruba, Hausa, Igbo, Swahili. All non-English labelled beta; listings translated by AI once and cached | AI · DB for cache |
 | **Listen mode** | Reads the current screen aloud with the phone's own voices | — |
+| **Installable app** | Add to Home Screen on Android/iPhone; opens instantly and reads offline (service worker); app shortcuts | — |
+| **Status images** | One tap turns any listing, the dollar rate, a scam alert or a check result into a 1080×1920 WhatsApp-status picture with your Captain link | — |
+| **App feel** | Bottom tab bar with a badge for today's sprint tasks, first-visit welcome, Board search, daily streak, light haptics | — |
+| **Link previews** | Branded preview image and text when the link is pasted into WhatsApp, X or Facebook | — |
 | **Admin** | `/admin.html`: approve winners, read the radar, rank captains | DB + `ADMIN_TOKEN` |
 
 Everything degrades gracefully: with no keys at all, the site still works (Drop, Board, You qualify, Sprint, quick scam check, listen).
@@ -29,6 +33,9 @@ public/app.js              all app logic
 public/i18n.js             interface text in 7 languages (missing keys fall back to English)
 public/data/listings.json  rates, listings, eligibility rules  ← edit this daily
 public/admin.html          owner dashboard
+public/share.js            status-image maker
+public/sw.js               offline + instant loading
+public/manifest.webmanifest, public/icons/  install metadata, icons, link-preview image
 api/*.js                   server functions (check, radar, coach, translate, proof, captain, admin, health)
 api/_lib.js                shared helpers (not a route)
 supabase/schema.sql        database tables, all private (RLS on, no public policies)

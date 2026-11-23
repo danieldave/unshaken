@@ -1,0 +1,22 @@
+{
+  "name": "Unshaken",
+  "short_name": "Unshaken",
+  "description": "Verified ways to earn, learn and go abroad. Free, no sign-up, with a scam checker.",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07110D",
+  "theme_color": "#07110D",
+  "categories": ["education", "finance", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Check a deal", "url": "/#check" },
+    { "name": "Board", "url": "/#board" },
+    { "name": "My sprints", "url": "/#sprint" }
+  ]
+}

@@ -79,25 +79,43 @@ async function previewAI(prompt, images) {          // only used in the Claude p
 }
 
 /* ---------- views ---------- */
-const VIEWS = ["drop", "board", "check", "sprint", "coach", "wall", "captain"];
+const VIEWS = ["drop", "board", "check", "sprint", "more", "coach", "wall", "captain"];
+const TABS = ["drop", "board", "check", "sprint", "more"];
+const ICON = {
+  drop: '<path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/>',
+  board: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 10v10"/>',
+  check: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  sprint: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>',
+  more: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+  coach: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+  wall: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+  captain: '<path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M2 21v-2a4 4 0 0 1 3-3.9"/>',
+  install: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>'
+};
+const svg = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
 let view = "drop";
+const dueToday = () => { const d = new Date().toISOString().slice(0, 10); return S.sprints.reduce((n, sp) => n + sp.tasks.filter(x => !x.done && x.day <= d).length, 0); };
 function renderNav() {
-  $("#nav").innerHTML = VIEWS.map(v => `<a href="#${v}" ${v === view ? 'aria-current="page"' : ""}>${esc(t("nav_" + v))}</a>`).join("");
+  const active = TABS.includes(view) ? view : "more", badge = dueToday();
+  $("#nav").innerHTML = TABS.map(v => `<a href="#${v}" ${v === active ? 'aria-current="page"' : ""}>${svg(v)}<span>${esc(t("nav_" + v))}</span>${v === "sprint" && badge ? `<span class="dot">${badge}</span>` : ""}</a>`).join("");
 }
+const buzz = () => { try { navigator.vibrate && navigator.vibrate(8); } catch {} };
 function route() {
   const h = location.hash.slice(1);
   view = VIEWS.includes(h) ? h : "drop";
   stopSpeak(); renderNav(); renderView();
-  document.querySelector("nav a[aria-current]")?.scrollIntoView?.({ block: "nearest", inline: "center" });
+  scrollTo?.(0, 0);
 }
 function renderView() {
-  const fn = { drop: vDrop, board: vBoard, check: vCheck, sprint: vSprint, coach: vCoach, wall: vWall, captain: vCaptain }[view];
+  const fn = { drop: vDrop, board: vBoard, check: vCheck, sprint: vSprint, more: vMore, coach: vCoach, wall: vWall, captain: vCaptain }[view];
   $("#main").innerHTML = fn();
   after[view]?.();
   document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
   $("#listen").textContent = speaking ? t("stop") : t("listen");
 }
 const after = {};
+after.board = () => { const q = $("#q"); if (!q) return; q.oninput = () => { S.q = q.value; const pos = q.selectionStart; renderView(); const n = $("#q"); n.focus(); n.setSelectionRange(pos, pos); }; };
 
 /* ===== Today's Drop ===== */
 let idx = 0, start = Date.now();
@@ -111,7 +129,7 @@ const STORIES = [
     <div class="tiles"><div class="tile"><span class="sub">£1</span><strong>${fmtN(g.ngn)}</strong><span class="sub">${esc(g.source)}, ${fmtD(g.date)}</span></div>
     <div class="tile"><span class="sub">${t("s_5")}</span><strong style="color:var(--gold)">${fmtN(u.ngn * 5)}</strong><span class="sub">${t("s_rate")}</span></div></div>
     <p class="lead" style="margin:0">${t("s_lead")}</p>
-    <div class="cta"><a class="btn" href="#board">${t("s_all")}</a></div>`; } },
+    <div class="cta"><a class="btn" href="#board">${t("s_all")}</a><button class="btn" data-img="rates">${t("status_img")}</button></div>`; } },
   { glow: "var(--mint)", html: () => S.profile
       ? `<span class="kick">${t("s_fit_k")}</span><div class="ring">${fitCount()}</div><h2>${t("s_fit_h", { n: fitCount() })}</h2>
          <div class="cta"><a class="btn go" href="#board" data-cat="fit">${t("s_fit_see")}</a><button class="btn" data-quiz>${t("q_edit")}</button></div>`
@@ -129,7 +147,7 @@ const STORIES = [
     <p class="sub" style="margin:0">${t("s_earn_sub")}</p><div class="cta"><a class="btn" href="#board" data-cat="Earn">${t("s_earn_cta")}</a></div>` },
   { glow: "var(--coral)", html: () => `<span class="kick" style="color:var(--coral)">${t("s_scam_k")}</span><h2 style="font-size:30px">${t("s_scam_h")}</h2>
     <div class="warn"><span>${t("s_scam_1")}</span><span>${t("s_scam_2")}</span><span>${t("s_scam_3")}</span></div>
-    <div class="cta"><a class="btn" href="#check">${t("s_scam_cta")}</a></div>` }
+    <div class="cta"><a class="btn" href="#check">${t("s_scam_cta")}</a><button class="btn gold" data-img="scam">${t("warn_group")}</button></div>` }
 ];
 function vDrop() {
   return `<div class="story"><div class="glow" id="glow"></div><div class="bars">${STORIES.map(() => "<span><b></b></span>").join("")}</div>
@@ -158,6 +176,7 @@ function card(raw) {
     <div class="acts"><a class="btn go sm" href="${esc(raw.link)}" target="_blank" rel="noopener">${t("official")}</a>
       <button class="btn sm" data-save="${raw.id}">${S.saved.has(raw.id) ? t("saved") : t("save")}</button>
       <button class="btn sm" data-share="${raw.id}">${t("share")}</button>
+      <button class="btn sm" data-img="item:${raw.id}">${t("status_img")}</button>
       ${raw.rolling ? "" : `<button class="btn sm" data-sprint="${raw.id}">${inSprint ? t("in_sprint") : t("start_sprint")}</button>`}</div>
   </article>`;
 }
@@ -166,12 +185,15 @@ function vBoard() {
   if (!cats.includes(S.cat)) S.cat = "All";
   const rank = it => (fit(it) === "no" ? 1e16 : 0) + (it.rolling ? 9e15 : (left(it.due).total || 8e15));
   const list = S.items.filter(it => S.cat === "All" || (S.cat === "Saved" ? S.saved.has(it.id) : S.cat === "fit" ? fit(it) !== "no" : it.cat === S.cat)).sort((a, b) => rank(a) - rank(b));
+  const q = (S.q || "").toLowerCase().trim();
+  const shown = q ? list.filter(it => { const x = it$(it); return [x.title, x.get, x.who, it.cat].join(" ").toLowerCase().includes(q); }) : list;
   return `<h2 style="margin-top:18px">${t("board_title", { n: openItems().length })}</h2>
     <p class="sub" style="margin:6px 0 0">${t("board_sub")}</p>
     <div class="panel" style="margin-top:14px;padding:14px"><div class="row"><strong>${S.profile ? t("qualify_n", { n: fitCount() }) : t("q_title")}</strong>
       <button class="btn sm" data-quiz>${S.profile ? t("q_edit") : t("s_fit_cta")}</button></div></div>
-    <div class="chips">${cats.map(c => `<button aria-pressed="${c === S.cat}" data-c="${c}">${t("cat_" + c)}</button>`).join("")}</div>
-    <div id="list">${list.length ? list.map(card).join("") : `<p class="empty">${t(S.cat === "Saved" ? "saved_empty" : "fit_none")}</p>`}</div>`;
+    <div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><input type="text" id="q" placeholder="${esc(t("search_ph"))}" value="${esc(S.q || "")}" aria-label="${esc(t("search_ph"))}"></div>
+    <div class="chips">${cats.map(c => `<button aria-pressed="${c === S.cat}" data-c="${c}">${t("cat_" + (c === "All" || c === "Saved" ? c.toLowerCase() : c))}</button>`).join("")}</div>
+    <div id="list">${shown.length ? shown.map(card).join("") : `<p class="empty">${t(S.cat === "Saved" ? "saved_empty" : "fit_none")}</p>`}</div>`;
 }
 
 /* ===== Check a deal + Scam Radar ===== */
@@ -207,7 +229,9 @@ function renderVerdict(r, src) {
   $("#out").innerHTML = `<div class="verdict v-${esc(r.verdict)}"><h3 style="font-size:21px">${icon} ${esc(r.summary)}</h3>
     ${r.seen ? `<strong style="color:var(--gold)">${t("check_seen", { n: r.seen })}</strong>` : ""}
     ${r.flags?.length ? `<strong>${t("warn_signs")}</strong><ul>${r.flags.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
-    <strong>${t("what_do")}</strong><ul>${(r.next || []).map(f => `<li>${esc(f)}</li>`).join("")}</ul><span class="sub">${esc(src)}</span></div>`;
+    <strong>${t("what_do")}</strong><ul>${(r.next || []).map(f => `<li>${esc(f)}</li>`).join("")}</ul><span class="sub">${esc(src)}</span>
+    ${r.verdict !== "green" ? `<button class="btn gold" data-img="verdict">${t("warn_group")}</button>` : ""}</div>`;
+  S.lastVerdict = r;
 }
 after.check = () => {
   $("#example").onclick = () => { $("#deal").value = "Product Tube is the name. If she can stream for 2hrs daily, video streaming. $2 daily, for 7 days is $14. Withdrawal paid in USDT-TRC20. Only for females sha. $10 update needed."; };
@@ -349,6 +373,59 @@ after.captain = async () => {
   } catch { $("#capbox").innerHTML = `<p class="sub">${t("error")}</p>`; }
 };
 
+/* ===== More ===== */
+let installEvt = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; if (view === "more") renderView(); });
+const standalone = () => matchMedia?.("(display-mode: standalone)").matches || navigator.standalone;
+function vMore() {
+  const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const item = (href, k, title, sub, attr = "") => `<${href ? `a href="${href}"` : `button type="button" ${attr}`}>${svg(k)}<span><strong>${esc(title)}</strong><span>${esc(sub)}</span></span></${href ? "a" : "button"}>`;
+  return `<h2 style="margin-top:18px">${t("more_title")}</h2>
+    ${S.streak > 1 ? `<p class="sub" style="margin:6px 0 0">${t("streak_long", { n: S.streak })}</p>` : ""}
+    <div class="menu">
+      ${item("#coach", "coach", t("nav_coach"), t("more_coach"))}
+      ${item("#wall", "wall", t("nav_wall"), t("more_wall"))}
+      ${item("#captain", "captain", t("nav_captain"), t("more_captain"))}
+      ${item("", "share", t("share_app"), t("share_app_sub"), "data-shareapp")}
+      ${standalone() ? "" : installEvt ? item("", "install", t("install"), t("install_sub"), "data-install") : S.env.api ? `<div class="panel" style="margin:0">${svg("install")}<p class="sub" style="margin:0">${iOS ? t("install_ios") : t("install_android")}</p></div>` : ""}
+    </div>`;
+}
+function statusCard(kind) {
+  const link = (shareLink() || "").replace(/^https?:\/\//, "") || t("nosignup");
+  if (kind === "rates") { const u = S.rates.usd; return { accent: "mint", kicker: t("s_dollar"), title: `$1 = ${fmtN(u.ngn)}`, big: fmtN(u.ngn * 5), bigSub: t("s_5") + " · " + fmtD(u.date), lines: [t("s_lead")], footer: t("nosignup"), link }; }
+  if (kind === "scam") return { accent: "coral", kicker: t("s_scam_k"), title: t("s_scam_h"), lines: [t("s_scam_1"), t("s_scam_2"), t("s_scam_3")], footer: t("s_scam_cta"), link };
+  if (kind === "verdict") { const r = S.lastVerdict || {}; return { accent: r.verdict === "red" ? "coral" : "gold", kicker: t("s_scam_k"), title: r.summary || "", lines: [...(r.flags || []).slice(0, 4)], footer: t("s_scam_cta"), link }; }
+  const raw = S.items.find(i => i.id === kind.split(":")[1]), it = it$(raw), l = raw.rolling ? null : left(raw.due);
+  return { accent: raw.rolling ? "mint" : "gold", kicker: `${t("cat_" + raw.cat)} · ${raw.rolling ? t("always_open") : dueLabel(raw)[0]}`, title: it.title, big: l && l.total ? `${l.d}d ${pad(l.h)}h` : null, bigSub: raw.rolling ? null : it.dueText, lines: [it.get, it.who], footer: t("free_apply"), link };
+}
+async function shareImage(kind, btn) {
+  buzz(); const old = btn.textContent; btn.textContent = t("loading"); btn.disabled = true;
+  try {
+    const r = await window.UnshakenShare.share(statusCard(kind), shareLink());
+    if (r.shared) { S.shares++; store.set("u_shares", S.shares); toast(t("copied")); }
+    else if (r.url) {
+      $("#modal").innerHTML = `<div class="sheet" role="dialog" aria-modal="true"><div class="row"><h3 style="font-size:20px">${t("status_img")}</h3><button class="pill" data-close aria-label="Close">✕</button></div>
+        <img class="preview-img" src="${r.url}" alt="${esc(t("status_img"))}"><p class="sub" style="margin:0">${t("status_hold")}</p>
+        ${S.env.api ? `<a class="btn go" href="${r.url}" download="unshaken-status.png">${t("save_img")}</a>` : ""}</div>`;
+      $("#modal").hidden = false;
+    }
+  } catch { toast(t("error")); }
+  btn.textContent = old; btn.disabled = false;
+}
+
+/* ---------- welcome (first visit) ---------- */
+function welcome() {
+  $("#modal").innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wt">
+    <h2 id="wt" style="font-size:30px">${t("welcome_t")}</h2>
+    <div class="menu" style="margin:0">
+      <div class="panel" style="margin:0">${svg("board")}<strong>${t("welcome_1")}</strong></div>
+      <div class="panel" style="margin:0">${svg("check")}<strong>${t("welcome_2")}</strong></div>
+      <div class="panel" style="margin:0">${svg("sprint")}<strong>${t("welcome_3")}</strong></div>
+    </div>
+    <button class="btn go" data-quiz>${t("welcome_go")}</button><button class="btn" data-close>${t("welcome_skip")}</button></div>`;
+  $("#modal").hidden = false; store.set("u_seen", 1);
+}
+
 /* ---------- quiz sheet ---------- */
 function openQuiz() {
   const p = S.profile || {}, radio = (name, opts) => `<div class="opts" role="radiogroup">${opts.map(([v, k]) => `<label><input type="radio" name="${name}" value="${v}" ${p[name] === v ? "checked" : ""} required> ${t(k)}</label>`).join("")}</div>`;
@@ -382,6 +459,10 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("button,a"); if (!el) return;
   const d = el.dataset;
   if ("quiz" in d) { e.preventDefault(); openQuiz(); }
+  if (d.img) { e.preventDefault(); shareImage(d.img, el); }
+  if ("shareapp" in d) { const link = shareLink() || location.href; try { if (navigator.share) { await navigator.share({ title: "Unshaken", text: t("share_app_sub"), url: link }); S.shares++; store.set("u_shares", S.shares); } else { await copy(link, null); toast(t("copied")); } } catch {} }
+  if ("install" in d && installEvt) { installEvt.prompt(); installEvt = null; }
+  if (d.save || d.sprint || d.share) buzz();
   if (d.cat) { S.cat = d.cat; store.set("u_cat", d.cat); }
   if (d.c) { S.cat = d.c; store.set("u_cat", d.c); renderView(); }
   if (d.save) { S.saved.has(d.save) ? S.saved.delete(d.save) : S.saved.add(d.save); store.set("u_saved", [...S.saved]); el.textContent = S.saved.has(d.save) ? t("saved") : t("save"); }
@@ -409,7 +490,7 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("change", e => {
   const d = e.target.dataset;
-  if (d.task) { const [id, i] = d.task.split(":"), sp = S.sprints.find(s => s.id === id); sp.tasks[+i].done = e.target.checked; store.set("u_sprints", S.sprints); renderView(); }
+  if (d.task) { buzz(); const [id, i] = d.task.split(":"), sp = S.sprints.find(s => s.id === id); sp.tasks[+i].done = e.target.checked; store.set("u_sprints", S.sprints); renderNav(); renderView(); }
 });
 
 /* ---------- language ---------- */
@@ -472,8 +553,15 @@ async function boot() {
   // referral visit (once per device per code)
   const ref = new URLSearchParams(location.search).get("c");
   if (ref && S.env.db && !store.get("u_ref_" + ref, false)) { api("captain", { action: "event", code: ref, kind: "visit", device: S.device }).then(() => store.set("u_ref_" + ref, true)).catch(() => {}); }
+  // daily streak (consecutive days with a visit)
+  const today = new Date().toISOString().slice(0, 10), days = store.get("u_days", []);
+  if (days[days.length - 1] !== today) { days.push(today); store.set("u_days", days.slice(-60)); }
+  let n = 0; for (let i = days.length - 1, d = new Date(today); i >= 0; i--, d = new Date(d.getTime() - DAY)) { if (days[i] === d.toISOString().slice(0, 10)) n++; else break; }
+  S.streak = n; if (n > 1) { $("#streak").hidden = false; $("#streak").textContent = t("streak", { n }); }
+  if ("serviceWorker" in navigator && S.env.api && location.protocol === "https:") navigator.serviceWorker.register("/sw.js").catch(() => {});
   addEventListener("hashchange", route);
   route();
+  if (!store.get("u_seen", 0) && !location.hash) welcome();
   if (S.lang !== "en") setLang(S.lang);
   setInterval(tick, 500); tick();
 }

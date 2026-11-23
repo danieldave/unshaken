@@ -12,6 +12,8 @@ window.UNSHAKEN_LANGS = [
 
 window.UNSHAKEN_I18N = {
 en: {
+  save_img:"Save image",
+  nav_more:"More", status_img:"Status image", warn_group:"Warn your group", status_hold:"Press and hold the image to save it, then post it to your status.", search_ph:"Search doors, e.g. Master's, UK, women", free_apply:"Free to apply. Checked by Unshaken.", more_title:"More from Unshaken", more_coach:"Score your statement of purpose", more_wall:"Real, verified winners", more_captain:"Bring your people, climb the OG Ladder", share_app:"Share Unshaken", share_app_sub:"Free doors to earn, learn and go. No sign-up.", install:"Install the app", install_sub:"Opens instantly, works offline", install_ios:"To install: tap Share in Safari, then Add to Home Screen.", install_android:"To install: open your browser menu, then Add to Home screen.", streak:"Day {n} streak", streak_long:"You've shown up {n} days in a row. Keep going.", welcome_t:"Welcome to Unshaken", welcome_1:"Real scholarships, jobs and free courses, each with its official link and a live deadline.", welcome_2:"Check any deal before you pay. Scams get flagged in seconds.", welcome_3:"Pick a deadline and we plan your days so you submit early.", welcome_go:"Find my doors (1 minute)", welcome_skip:"Just look around",
   nav_drop:"Today's Drop", nav_board:"Board", nav_check:"Check a deal", nav_sprint:"Sprint", nav_coach:"Essay Coach", nav_wall:"Winners", nav_captain:"Captains",
   nosignup:"No sign-up · No subscription", newdrop:"New drop in", beta:"Beta translation", listen:"Listen", stop:"Stop",
   q_title:"See which doors fit you", q_sub:"6 quick questions. Your answers stay on this phone.", q_country:"Your citizenship", q_level:"What do you want next?", q_work:"Work experience (any paid or volunteer work)", q_gender:"Gender (only used for women-only awards)", q_field:"Your field", q_student:"Are you a university student right now?", q_save:"Show my doors", q_edit:"Edit my answers",
@@ -40,6 +42,8 @@ en: {
   foot:"Rates are official CBN figures with their dates. Items marked 'confirm' are expected dates; open the official page before you rely on them. Partner links, if any, are always labelled. Unshaken never charges you to apply."
 },
 pcm: {
+  save_img:"Save the picture",
+  nav_more:"More", status_img:"Status picture", warn_group:"Warn your group", status_hold:"Press the picture long make you save am, then post am for your status.", search_ph:"Search doors, like Master's, UK, women", free_apply:"Na free to apply. Unshaken don check am.", more_title:"More for Unshaken", more_coach:"Score your statement of purpose", more_wall:"Real winners wey we verify", more_captain:"Bring your people, climb OG Ladder", share_app:"Share Unshaken", share_app_sub:"Free doors to make money, learn and travel. No sign-up.", install:"Install the app", install_sub:"E go open sharp sharp, e dey work offline", install_ios:"To install: tap Share for Safari, then Add to Home Screen.", install_android:"To install: open your browser menu, then Add to Home screen.", streak:"Day {n} streak", streak_long:"You don show face {n} days back to back. No stop.", welcome_t:"Welcome to Unshaken", welcome_1:"Real scholarship, work and free course, each one get official link and deadline wey dey count.", welcome_2:"Check any deal before you pay. We go flag scam for seconds.", welcome_3:"Pick deadline, we go plan your days so you submit early.", welcome_go:"Find my doors (1 minute)", welcome_skip:"Make I just look around",
   nav_drop:"Today Drop", nav_board:"Board", nav_check:"Check deal", nav_sprint:"Sprint", nav_coach:"Essay Coach", nav_wall:"Winners", nav_captain:"Captains",
   nosignup:"No sign-up · No subscription", newdrop:"New drop go land for", beta:"Beta translation", listen:"Hear am", stop:"Stop",
   q_title:"See which door fit you", q_sub:"6 quick questions. Your answer go stay for this phone.", q_country:"Which country you be citizen", q_level:"Wetin you wan do next?", q_work:"Work experience (paid or volunteer)", q_gender:"Gender (na only for women-only award)", q_field:"Your field", q_student:"You dey school now (university)?", q_save:"Show my doors", q_edit:"Change my answers",
@@ -68,6 +72,8 @@ pcm: {
   foot:"Rates na official CBN figures with the date. Anything wey get 'confirm' na expected date; open official page before you rely on am. Partner link, if e dey, go always get label. Unshaken no dey collect money make you apply."
 },
 fr: {
+  save_img:"Enregistrer l'image",
+  nav_more:"Plus", status_img:"Image de statut", warn_group:"Prévenir votre groupe", status_hold:"Appuyez longuement sur l'image pour l'enregistrer, puis publiez-la en statut.", search_ph:"Rechercher : master, Royaume-Uni, femmes…", free_apply:"Candidature gratuite. Vérifié par Unshaken.", more_title:"Plus d'Unshaken", more_coach:"Notez votre lettre de motivation", more_wall:"De vrais lauréats vérifiés", more_captain:"Amenez votre entourage, montez l'échelle OG", share_app:"Partager Unshaken", share_app_sub:"Des portes gratuites pour gagner, apprendre et partir. Sans inscription.", install:"Installer l'application", install_sub:"S'ouvre instantanément, fonctionne hors ligne", install_ios:"Pour installer : touchez Partager dans Safari, puis Sur l'écran d'accueil.", install_android:"Pour installer : ouvrez le menu du navigateur, puis Ajouter à l'écran d'accueil.", streak:"Série : jour {n}", streak_long:"Vous êtes venu(e) {n} jours de suite. Continuez.", welcome_t:"Bienvenue sur Unshaken", welcome_1:"De vraies bourses, emplois et cours gratuits, avec lien officiel et date limite en direct.", welcome_2:"Vérifiez une offre avant de payer. Les arnaques sont signalées en quelques secondes.", welcome_3:"Choisissez une date limite : nous planifions vos jours pour soumettre tôt.", welcome_go:"Trouver mes portes (1 minute)", welcome_skip:"Juste regarder",
   nav_drop:"Le Drop du jour", nav_board:"Tableau", nav_check:"Vérifier une offre", nav_sprint:"Sprint", nav_coach:"Coach d'essai", nav_wall:"Lauréats", nav_captain:"Capitaines",
   nosignup:"Sans inscription · Sans abonnement", newdrop:"Nouveau drop dans", beta:"Traduction bêta", listen:"Écouter", stop:"Arrêter",
   q_title:"Voyez quelles portes vous correspondent", q_sub:"6 questions rapides. Vos réponses restent sur ce téléphone.", q_country:"Votre nationalité", q_level:"Que voulez-vous ensuite ?", q_work:"Expérience professionnelle (payée ou bénévole)", q_gender:"Genre (uniquement pour les bourses réservées aux femmes)", q_field:"Votre domaine", q_student:"Êtes-vous étudiant(e) à l'université ?", q_save:"Voir mes portes", q_edit:"Modifier mes réponses",
@@ -96,6 +102,7 @@ fr: {
   foot:"Les taux sont les chiffres officiels de la CBN avec leur date. Les offres marquées « à confirmer » ont des dates estimées ; ouvrez la page officielle avant de vous y fier. Les liens partenaires, s'il y en a, sont toujours signalés. Unshaken ne vous fait jamais payer pour postuler."
 },
 yo: {
+  nav_more:"Síwájú sí i",
   nav_drop:"Ìròyìn Òní", nav_board:"Pátákó", nav_check:"Ṣàyẹ̀wò ìpèsè", nav_sprint:"Ìṣètò", nav_coach:"Olùkọ́ Àròkọ", nav_wall:"Àwọn Aṣẹ́gun", nav_captain:"Àwọn Olórí",
   nosignup:"Kò sí ìforúkọsílẹ̀ · Kò sí owó oṣù", newdrop:"Ìròyìn tuntun ní", beta:"Ìtumọ̀ àdánwò", listen:"Gbọ́", stop:"Dúró",
   q_title:"Wo àwọn ilẹ̀kùn tó bá ọ mu", q_sub:"Ìbéèrè kíákíá mẹ́fà. Ìdáhùn rẹ wà lórí fóònù yìí nìkan.", q_country:"Orílẹ̀-èdè rẹ", q_level:"Kí lo fẹ́ ṣe tó kàn?", q_work:"Ìrírí iṣẹ́ (tí wọ́n sanwó tàbí ti ìyọ̀ǹda)", q_gender:"Akọ tàbí abo (fún ẹ̀bùn àwọn obìnrin nìkan)", q_field:"Ẹ̀ka ẹ̀kọ́ rẹ", q_student:"Ṣé o jẹ́ akẹ́kọ̀ọ́ yunifásítì báyìí?", q_save:"Fi àwọn ilẹ̀kùn mi hàn", q_edit:"Yí ìdáhùn mi padà",
@@ -123,6 +130,7 @@ yo: {
   s_scam_k:"Ìṣọ́ Jìbìtì", s_scam_cta:"Ṣàyẹ̀wò ìpèsè fúnra rẹ"
 },
 ha: {
+  nav_more:"Ƙari",
   nav_drop:"Labaran Yau", nav_board:"Allo", nav_check:"Duba tayi", nav_sprint:"Tsari", nav_coach:"Malamin Rubutu", nav_wall:"Masu Nasara", nav_captain:"Kyaftin",
   nosignup:"Babu rajista · Babu biyan wata-wata", newdrop:"Sabon labari cikin", beta:"Fassarar gwaji", listen:"Saurara", stop:"Tsaya",
   q_title:"Duba ƙofofin da suka dace da kai", q_sub:"Tambayoyi 6 masu sauri. Amsoshinka suna kan wannan wayar kawai.", q_country:"Ƙasarka", q_level:"Me kake so na gaba?", q_work:"Ƙwarewar aiki (na albashi ko na sa-kai)", q_gender:"Jinsi (don kyautar mata kawai)", q_field:"Fannin karatunka", q_student:"Kana ɗalibin jami'a yanzu?", q_save:"Nuna ƙofofina", q_edit:"Gyara amsoshina",
@@ -150,6 +158,7 @@ ha: {
   s_scam_k:"Gadin Damfara", s_scam_cta:"Duba tayi da kanka"
 },
 ig: {
+  nav_more:"Ọzọ",
   nav_drop:"Akụkọ Taa", nav_board:"Bọọdụ", nav_check:"Lelee onyinye", nav_sprint:"Atụmatụ", nav_coach:"Onye Nkuzi Edemede", nav_wall:"Ndị Meriri", nav_captain:"Ndị Isi",
   nosignup:"Enweghị ndebanye aha · Enweghị ego kwa ọnwa", newdrop:"Akụkọ ọhụrụ n'ime", beta:"Ntụgharị nnwale", listen:"Gee ntị", stop:"Kwụsị",
   q_title:"Hụ ụzọ ndị dabara gị", q_sub:"Ajụjụ isii ngwa ngwa. Azịza gị na-anọ na ekwentị a naanị.", q_country:"Obodo ị bụ nwa amaala", q_level:"Gịnị ka ị chọrọ ọzọ?", q_work:"Ahụmịhe ọrụ (nke a kwụrụ ụgwọ ma ọ bụ afọ ofufo)", q_gender:"Okike (maka onyinye ụmụ nwanyị naanị)", q_field:"Ngalaba gị", q_student:"Ị bụ nwa akwụkwọ mahadum ugbu a?", q_save:"Gosi m ụzọ m", q_edit:"Gbanwee azịza m",
@@ -177,6 +186,7 @@ ig: {
   s_scam_k:"Nche Aghụghọ", s_scam_cta:"Lelee onyinye n'onwe gị"
 },
 sw: {
+  nav_more:"Zaidi",
   nav_drop:"Habari za Leo", nav_board:"Ubao", nav_check:"Kagua ofa", nav_sprint:"Mpango", nav_coach:"Kocha wa Insha", nav_wall:"Washindi", nav_captain:"Manahodha",
   nosignup:"Bila kujisajili · Bila usajili wa malipo", newdrop:"Habari mpya baada ya", beta:"Tafsiri ya majaribio", listen:"Sikiliza", stop:"Simama",
   q_title:"Ona milango inayokufaa", q_sub:"Maswali 6 ya haraka. Majibu yako yanabaki kwenye simu hii.", q_country:"Uraia wako", q_level:"Unataka nini kinachofuata?", q_work:"Uzoefu wa kazi (wa kulipwa au wa kujitolea)", q_gender:"Jinsia (kwa tuzo za wanawake pekee)", q_field:"Fani yako", q_student:"Je, wewe ni mwanafunzi wa chuo kikuu sasa?", q_save:"Onyesha milango yangu", q_edit:"Badilisha majibu yangu",
