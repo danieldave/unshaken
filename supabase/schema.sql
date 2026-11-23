@@ -70,3 +70,15 @@ alter table translations enable row level security;
 insert into storage.buckets (id, name, public)
 values ('proofs', 'proofs', false)
 on conflict (id) do nothing;
+
+-- 5. Deadline alerts (web push). Anonymous: only the browser's push address and the saved listing ids.
+create table if not exists push_subs (
+  endpoint text primary key,
+  keys jsonb not null,                     -- p256dh + auth from the browser
+  items text[] not null default '{}',      -- listing ids this phone saved or is sprinting on
+  lang text,
+  sent jsonb not null default '{}',        -- {"<id>:7": true, "<id>:1": true} so each alert goes once
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table push_subs enable row level security;

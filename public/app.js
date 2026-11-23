@@ -42,29 +42,38 @@ function dueLabel(it) {
   if (!l.total) return [t("check_status"), "shut"];
   return [l.d < 1 ? t("under24") : t("days_left", { n: l.d }), ""];
 }
-/** "yes" | "maybe" | "no" for the saved profile. */
-function fit(it) {
+/** Eligibility with reasons. s: "yes" | "maybe" | "near" | "no". near = only fixable gaps. */
+const FIXABLE = new Set(["work"]);
+function fitInfo(it) {
   const p = S.profile, e = it.elig || {};
   if (!p) return null;
-  if (!Object.keys(e).length) return "yes";
-  let maybe = false;
+  const why = [], maybe = [];
   const unknownCountry = p.country === "OTHER";
-  if (e.levels) { if (p.level === "none" || !e.levels.includes(p.level)) return "no"; }
-  if (e.exclude) {
-    const ex = Array.isArray(e.exclude) ? e.exclude.includes(p.country) : inRegion(p.country, e.exclude);
-    if (ex) return "no";
-  }
-  if (e.countries) { if (unknownCountry) maybe = true; else if (!e.countries.includes(p.country)) return "no"; }
-  if (e.region) { if (unknownCountry) maybe = true; else if (!inRegion(p.country, e.region)) return "no"; }
-  if (e.gender === "female") { if (p.gender === "male") return "no"; if (p.gender !== "female") maybe = true; }
-  if (e.fields && !e.fields.includes(p.field)) return "no";
-  if (e.student && p.student !== "yes") return "no";
-  if (e.minWork && Number(p.work) < e.minWork) return "no";
-  if (e.partnerCheck) maybe = true;
-  return maybe ? "maybe" : "yes";
+  if (e.levels && (p.level === "none" || !e.levels.includes(p.level))) why.push("level");
+  if (e.exclude && (Array.isArray(e.exclude) ? e.exclude.includes(p.country) : inRegion(p.country, e.exclude))) why.push("country");
+  if (e.countries) { if (unknownCountry) maybe.push("country_check"); else if (!e.countries.includes(p.country)) why.push("country"); }
+  if (e.region) { if (unknownCountry) maybe.push("country_check"); else if (!inRegion(p.country, e.region)) why.push("region"); }
+  if (e.gender === "female") { if (p.gender === "male") why.push("gender"); else if (p.gender !== "female") maybe.push("gender_check"); }
+  if (e.fields && !e.fields.includes(p.field)) why.push("field");
+  if (e.student && p.student !== "yes") why.push("student");
+  if (e.minWork && Number(p.work) < e.minWork) why.push("work");
+  if (e.partnerCheck) maybe.push("partner");
+  if (why.length) return { s: why.every(k => FIXABLE.has(k)) ? "near" : "no", why, need: e.minWork };
+  return { s: maybe.length ? "maybe" : "yes", why: maybe };
 }
+const fit = it => fitInfo(it)?.s ?? null;
 const openItems = () => S.items.filter(i => i.rolling || i.opens || left(i.due).total);
 const fitCount = () => openItems().filter(i => fit(i) === "yes").length;
+const nearCount = () => openItems().filter(i => fit(i) === "near").length;
+
+/* ---------- naira value of an award ---------- */
+const compactN = n => n >= 1e6 ? "₦" + (n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.0+$/, "") + "m" : "₦" + Math.round(n).toLocaleString("en-US");
+function naira(raw) {
+  const a = raw.amount, r = a && S.rates?.[a.cur.toLowerCase()];
+  if (!a || !r) return "";
+  const lo = a.value * r.ngn, hi = a.max ? a.max * r.ngn : 0;
+  return `≈ ${compactN(lo)}${hi ? " – " + compactN(hi) : ""}${a.per === "month" ? " " + t("per_month") : ""}`;
+}
 
 /* ---------- API + AI (with preview fallbacks) ---------- */
 async function api(path, body) {
@@ -91,6 +100,8 @@ const ICON = {
   wall: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
   captain: '<path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M2 21v-2a4 4 0 0 1 3-3.9"/>',
   install: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+  bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
+  pen: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
   share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>'
 };
 const svg = k => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
@@ -131,7 +142,7 @@ const STORIES = [
     <p class="lead" style="margin:0">${t("s_lead")}</p>
     <div class="cta"><a class="btn" href="#board">${t("s_all")}</a><button class="btn" data-img="rates">${t("status_img")}</button></div>`; } },
   { glow: "var(--mint)", html: () => S.profile
-      ? `<span class="kick">${t("s_fit_k")}</span><div class="ring">${fitCount()}</div><h2>${t("s_fit_h", { n: fitCount() })}</h2>
+      ? `<span class="kick">${t("s_fit_k")}</span><div class="ring">${fitCount()}</div><h2>${t("s_fit_h", { n: fitCount() })}</h2>${nearCount() ? `<p class="lead" style="margin:0;color:var(--gold)">${t("near_n", { n: nearCount() })}</p>` : ""}
          <div class="cta"><a class="btn go" href="#board" data-cat="fit">${t("s_fit_see")}</a><button class="btn" data-quiz>${t("q_edit")}</button></div>`
       : `<span class="kick">${t("s_fit_k")}</span><h2 style="font-size:34px">${t("s_fit_q")}</h2><p class="sub" style="margin:0">${t("q_sub")}</p>
          <div class="cta"><button class="btn go" data-quiz>${t("s_fit_cta")}</button></div>` },
@@ -140,12 +151,16 @@ const STORIES = [
     return `<span class="kick" style="color:var(--gold)">${t("s_close")} · ${t("cat_" + s.cat)}</span>
     <h2 style="font-size:28px">${esc(x.title)}</h2><p class="sub" style="margin:0">${esc(x.get)}</p>
     <div class="clock">${[[l.d, "days"], [l.h, "hrs"], [l.m, "min"], [l.s, "sec"]].map(([v, u]) => `<div><b>${pad(v)}</b><small>${u}</small></div>`).join("")}</div>
-    ${f ? `<span class="fit ${f}">${t("fit_" + f)}</span>` : ""}
+    ${naira(s) ? `<strong style="color:var(--mint)">${naira(s)}</strong>` : ""}${fitBlock(s)}
     <div class="cta"><a class="btn gold" href="${esc(s.link)}" target="_blank" rel="noopener">${t("s_open")}</a><button class="btn" data-sprint="${s.id}">${t("s_sprint")}</button></div>`; } },
   { glow: "var(--mint)", html: () => `<span class="kick">${t("s_earn_k")}</span><h2 style="font-size:30px">${t("s_earn_h")}</h2>
     <div class="tiles"><div class="tile"><strong>CrowdGen</strong><span class="sub">200 countries</span></div><div class="tile"><strong>Mindrift</strong><span class="sub">Nigeria ✓</span></div></div>
     <p class="sub" style="margin:0">${t("s_earn_sub")}</p><div class="cta"><a class="btn" href="#board" data-cat="Earn">${t("s_earn_cta")}</a></div>` },
-  { glow: "var(--coral)", html: () => `<span class="kick" style="color:var(--coral)">${t("s_scam_k")}</span><h2 style="font-size:30px">${t("s_scam_h")}</h2>
+  { glow: "var(--coral)", html: () => S.radar?.total >= 5 && S.radar.topFlags?.length ? `<span class="kick" style="color:var(--coral)">${t("s_scam_k")} · ${t("radar_live")}</span>
+    <h2 style="font-size:25px">${t("radar_top", { flag: S.radar.topFlags[0].flag })}</h2>
+    <div class="stat"><div><b>${S.radar.total}</b><span class="sub">${t("radar_checked")}</span></div><div><b style="color:var(--coral)">${S.radar.byVerdict.red}</b><span class="sub">🔴</span></div><div><b style="color:var(--gold)">${S.radar.byVerdict.orange}</b><span class="sub">🟠</span></div></div>
+    <div class="warn">${S.radar.topFlags.slice(0, 3).map(f => `<span>${esc(f.flag)} · ${f.count}</span>`).join("")}</div>
+    <div class="cta"><a class="btn" href="#check">${t("s_scam_cta")}</a><button class="btn gold" data-img="radar">${t("warn_group")}</button></div>` : `<span class="kick" style="color:var(--coral)">${t("s_scam_k")}</span><h2 style="font-size:30px">${t("s_scam_h")}</h2>
     <div class="warn"><span>${t("s_scam_1")}</span><span>${t("s_scam_2")}</span><span>${t("s_scam_3")}</span></div>
     <div class="cta"><a class="btn" href="#check">${t("s_scam_cta")}</a><button class="btn gold" data-img="scam">${t("warn_group")}</button></div>` }
 ];
@@ -168,28 +183,36 @@ function card(raw) {
   return `<article class="card">
     <div class="row"><span class="tag">${t("cat_" + raw.cat)}</span><span class="due ${cls}">${lab}</span></div>
     <h3>${esc(it.title)}</h3><p>${esc(it.get)}</p>
+    ${naira(raw) ? `<div class="naira"><strong>${naira(raw)}</strong><span class="sub">${t("at_rate")} · ${fmtD(S.rates[raw.amount.cur.toLowerCase()].date)}</span></div>` : ""}
     <p><strong>${t("who")}:</strong> ${esc(it.who)}</p>
     ${raw.rolling ? "" : `<p><strong>${t("deadline")}:</strong> ${esc(it.dueText)}</p>`}
-    ${f ? `<span class="fit ${f}">${t("fit_" + f)}</span>` : ""}
+    ${fitBlock(raw)}
     ${raw.flag ? `<div class="note">${t("confirm")} ${esc(raw.flag)}</div>` : ""}
     <details><summary>${t("steps", { n: it.steps.length })}</summary><ol>${it.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol></details>
     <div class="acts"><a class="btn go sm" href="${esc(raw.link)}" target="_blank" rel="noopener">${t("official")}</a>
       <button class="btn sm" data-save="${raw.id}">${S.saved.has(raw.id) ? t("saved") : t("save")}</button>
       <button class="btn sm" data-share="${raw.id}">${t("share")}</button>
       <button class="btn sm" data-img="item:${raw.id}">${t("status_img")}</button>
+      ${raw.cat === "Go" ? `<button class="btn sm" data-writer="${raw.id}">${t("writer_btn")}</button>` : ""}
       ${raw.rolling ? "" : `<button class="btn sm" data-sprint="${raw.id}">${inSprint ? t("in_sprint") : t("start_sprint")}</button>`}</div>
   </article>`;
+}
+function fitBlock(raw) {
+  const fi = fitInfo(raw); if (!fi) return "";
+  if (fi.s === "near") return `<div class="near"><strong>${t("near_t")}</strong><span>${t("fix_work", { n: fi.need })}</span></div>`;
+  const reason = fi.why[0] ? `<span class="sub"> · ${t("why_" + fi.why[0])}</span>` : "";
+  return `<span class="fit ${fi.s}">${t("fit_" + fi.s)}${fi.s !== "yes" ? reason : ""}</span>`;
 }
 function vBoard() {
   const cats = ["All", ...(S.profile ? ["fit"] : []), "Go", "Earn", "Learn", "Grow", "Saved"];
   if (!cats.includes(S.cat)) S.cat = "All";
-  const rank = it => (fit(it) === "no" ? 1e16 : 0) + (it.rolling ? 9e15 : (left(it.due).total || 8e15));
+  const rank = it => (fit(it) === "no" ? 1e16 : fit(it) === "near" ? 5e15 : 0) + (it.rolling ? 9e15 : (left(it.due).total || 8e15));
   const list = S.items.filter(it => S.cat === "All" || (S.cat === "Saved" ? S.saved.has(it.id) : S.cat === "fit" ? fit(it) !== "no" : it.cat === S.cat)).sort((a, b) => rank(a) - rank(b));
   const q = (S.q || "").toLowerCase().trim();
   const shown = q ? list.filter(it => { const x = it$(it); return [x.title, x.get, x.who, it.cat].join(" ").toLowerCase().includes(q); }) : list;
   return `<h2 style="margin-top:18px">${t("board_title", { n: openItems().length })}</h2>
     <p class="sub" style="margin:6px 0 0">${t("board_sub")}</p>
-    <div class="panel" style="margin-top:14px;padding:14px"><div class="row"><strong>${S.profile ? t("qualify_n", { n: fitCount() }) : t("q_title")}</strong>
+    <div class="panel" style="margin-top:14px;padding:14px"><div class="row"><strong>${S.profile ? t("qualify_n", { n: fitCount() }) + (nearCount() ? ` · ${t("near_n", { n: nearCount() })}` : "") : t("q_title")}</strong>
       <button class="btn sm" data-quiz>${S.profile ? t("q_edit") : t("s_fit_cta")}</button></div></div>
     <div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><input type="text" id="q" placeholder="${esc(t("search_ph"))}" value="${esc(S.q || "")}" aria-label="${esc(t("search_ph"))}"></div>
     <div class="chips">${cats.map(c => `<button aria-pressed="${c === S.cat}" data-c="${c}">${t("cat_" + (c === "All" || c === "Saved" ? c.toLowerCase() : c))}</button>`).join("")}</div>
@@ -271,7 +294,7 @@ function makeSprint(raw) {
 function vSprint() {
   const list = S.sprints.map(sp => ({ sp, raw: S.items.find(i => i.id === sp.id) })).filter(x => x.raw);
   const todayISO = new Date().toISOString().slice(0, 10);
-  return `<div class="panel"><h2>${t("sprint_title")}</h2><p class="sub" style="margin:0">${t("sprint_sub")}</p></div>
+  return `<div class="panel"><h2>${t("sprint_title")}</h2><p class="sub" style="margin:0">${t("sprint_sub")}</p>${alertsCard()}</div>
     ${list.length ? list.map(({ sp, raw }) => { const it = it$(raw), d = sp.tasks.filter(x => x.done).length, [lab] = dueLabel(raw);
       return `<article class="card"><div class="row"><span class="tag">${t("cat_" + raw.cat)}</span><span class="due">${lab}</span></div>
       <h3>${esc(it.title)}</h3><div class="score"><div class="row"><span class="sub">${t("sprint_progress", { d, t: sp.tasks.length })}</span></div><div class="meter"><b style="width:${Math.round(d / sp.tasks.length * 100)}%"></b></div></div>
@@ -373,6 +396,112 @@ after.captain = async () => {
   } catch { $("#capbox").innerHTML = `<p class="sub">${t("error")}</p>`; }
 };
 
+/* ===== Deadline alerts (web push, no account) ===== */
+const alertItems = () => [...new Set([...S.saved, ...S.sprints.map(x => x.id)])];
+const b64ToU8 = b => { const p = "=".repeat((4 - b.length % 4) % 4), s = atob((b + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(s, c => c.charCodeAt(0)); };
+const pushReady = () => S.env.api && S.push?.enabled && "serviceWorker" in navigator && "PushManager" in window;
+async function alertsOn() {
+  if (!pushReady()) return toast(t("alerts_unavailable"));
+  try {
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") return toast(t("alerts_denied"));
+    const reg = await navigator.serviceWorker.ready;
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(S.push.publicKey) });
+    await api("push", { subscription: sub.toJSON(), items: alertItems(), lang: S.lang });
+    store.set("u_alerts", true); S.alerts = true; buzz(); toast(t("alerts_on_t")); renderView();
+  } catch { toast(t("error")); }
+}
+async function alertsOff() {
+  try { const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription(); if (sub) { await api("push", { action: "off", endpoint: sub.endpoint }).catch(() => {}); await sub.unsubscribe(); } } catch {}
+  store.set("u_alerts", false); S.alerts = false; renderView();
+}
+let syncTimer = null;
+function syncAlerts() {
+  if (!S.alerts || !pushReady()) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(async () => { try { const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription(); if (sub) api("push", { subscription: sub.toJSON(), items: alertItems(), lang: S.lang }).catch(() => {}); } catch {} }, 800);
+}
+function alertsCard() {
+  if (!S.env.api) return "";
+  const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (!S.push?.enabled) return "";
+  if (iOS && !standalone()) return `<div class="panel" style="margin:0">${svg("bell")}<strong>${t("alerts_t")}</strong><p class="sub" style="margin:0">${t("alerts_ios")}</p></div>`;
+  return `<div class="panel" style="margin:0"><div class="row"><span style="display:flex;gap:12px;align-items:center">${svg("bell")}<strong>${t("alerts_t")}</strong></span>
+    <button class="btn sm ${S.alerts ? "" : "go"}" data-alerts="${S.alerts ? "off" : "on"}">${S.alerts ? t("alerts_off") : t("alerts_on")}</button></div>
+    <p class="sub" style="margin:0">${S.alerts ? t("alerts_status", { n: alertItems().length }) : t("alerts_sub")}</p></div>`;
+}
+
+/* ===== Message writer ===== */
+const TEMPLATES = {
+  referee: (it, f) => ({ subject: `Reference request: ${it.title}`, body: `Dear ${f.to || "[Referee's name]"},
+
+I hope you are well. I am applying for the ${it.title}${it.dueText ? `, which closes on ${it.dueText}` : ""}, and I would be very grateful if you could write a reference for me.
+
+You know my work from ${f.details || "[course/job you did with them, and when]"}. If it helps, I can send my CV, the programme link and three short points you could mention.
+
+The reference is needed by ${it.dueText || "[deadline]"}. I'll gladly send a reminder a week before.
+
+Thank you for considering this.
+
+Kind regards,
+${f.name || "[Your name]"}` }),
+  professor: (it, f) => ({ subject: `Prospective student: interest in your research`, body: `Dear ${f.to || "Professor [Surname]"},
+
+My name is ${f.name || "[Your name]"}. I am preparing an application for the ${it.title} and I am very interested in your work on ${f.details || "[their specific research topic or paper]"}.
+
+My background is in [your degree and one result or project]. I would like to build on this by [what you want to study and why it fits their group].
+
+Would you be open to supervising a student with this focus, or could you tell me if there is a better person to contact?
+
+I have attached my CV. Thank you for your time.
+
+Kind regards,
+${f.name || "[Your name]"}` }),
+  followup: (it, f) => ({ subject: `Following up: ${it.title}`, body: `Dear ${f.to || "[Name]"},
+
+I hope you are well. I am following up on my message from last week about the ${it.title}${it.dueText ? ` (deadline ${it.dueText})` : ""}.
+
+${f.details || "[One useful update, e.g. 'I have now received my transcript' or 'I have attached a short summary of my project']"}
+
+I understand you are busy, and I appreciate any reply when you have a moment.
+
+Kind regards,
+${f.name || "[Your name]"}` })
+};
+function openWriter(id) {
+  const raw = S.items.find(i => i.id === id), it = it$(raw), saved = store.get("u_writer", {});
+  $("#modal").innerHTML = `<form class="sheet" id="wr" role="dialog" aria-modal="true" aria-labelledby="wrt">
+    <div class="row"><h2 id="wrt" style="font-size:26px">${t("writer_t")}</h2><button type="button" class="pill" data-close aria-label="Close">✕</button></div>
+    <p class="sub" style="margin:0">${esc(it.title)}</p>
+    <div class="chips" style="margin:0">${["referee", "professor", "followup"].map((k, i) => `<button type="button" class="chipr" data-wt="${k}" aria-pressed="${i === 0}">${t("w_" + k)}</button>`).join("")}</div>
+    <div class="field"><label for="wn">${t("w_name")}</label><input type="text" id="wn" maxlength="60" value="${esc(saved.name || "")}"></div>
+    <div class="field"><label for="wto">${t("w_to")}</label><input type="text" id="wto" maxlength="80"></div>
+    <div class="field"><label for="wd">${t("w_details")}</label><input type="text" id="wd" maxlength="300" placeholder="${esc(t("w_details_ph"))}"></div>
+    <div class="field"><label for="wsub">${t("w_subject")}</label><input type="text" id="wsub"></div>
+    <div class="field"><label for="wbody">${t("w_body")}</label><textarea id="wbody" style="min-height:260px"></textarea></div>
+    <div class="acts"><button type="button" class="btn go" id="wcopy">${t("w_copy")}</button><button type="button" class="btn" id="wai">${t("w_ai")}</button></div>
+    <p class="sub" style="margin:0" id="wmsg2"></p></form>`;
+  $("#modal").hidden = false;
+  let type = "referee";
+  const fill = () => { const f = { name: $("#wn").value.trim(), to: $("#wto").value.trim(), details: $("#wd").value.trim() }; const m = TEMPLATES[type](it, f); $("#wsub").value = m.subject; $("#wbody").value = m.body; store.set("u_writer", { name: f.name }); };
+  fill();
+  $("#wr").addEventListener("input", e => { if (["wn", "wto", "wd"].includes(e.target.id)) fill(); });
+  $("#wr").addEventListener("click", e => { const k = e.target.dataset.wt; if (!k) return; type = k; document.querySelectorAll("[data-wt]").forEach(x => x.setAttribute("aria-pressed", x.dataset.wt === k)); fill(); });
+  $("#wcopy").onclick = e => copy(`Subject: ${$("#wsub").value}\n\n${$("#wbody").value}`, e.target);
+  $("#wai").onclick = async e => {
+    const btn = e.target, body = { type, programme: it.title, name: $("#wn").value, to: $("#wto").value, details: $("#wd").value, lang: S.lang };
+    btn.disabled = true; $("#wmsg2").textContent = t("loading");
+    try {
+      let r = null;
+      if (S.env.api && S.env.ai) r = await api("write", body);
+      else if (S.sample) r = await previewAI(`Write ${type === "referee" ? "a polite reference-letter request" : type === "professor" ? "a short first email to a potential supervisor" : "a courteous follow-up email"} for the programme "${it.title}". Sender: ${body.name || "[Your name]"}. Recipient: ${body.to || "[Name]"}. Facts: ${body.details || "(none)"}. Under 170 words, use only given facts, [placeholders] for missing ones. JSON only: {"subject":"","body":""}. Language code ${S.lang}.`);
+      if (r?.body) { $("#wsub").value = r.subject || $("#wsub").value; $("#wbody").value = r.body; $("#wmsg2").textContent = t("w_ai_done"); }
+      else $("#wmsg2").textContent = t("coach_off");
+    } catch { $("#wmsg2").textContent = t("error"); }
+    btn.disabled = false;
+  };
+}
+
 /* ===== More ===== */
 let installEvt = null;
 addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; if (view === "more") renderView(); });
@@ -383,6 +512,7 @@ function vMore() {
   return `<h2 style="margin-top:18px">${t("more_title")}</h2>
     ${S.streak > 1 ? `<p class="sub" style="margin:6px 0 0">${t("streak_long", { n: S.streak })}</p>` : ""}
     <div class="menu">
+      ${alertsCard()}
       ${item("#coach", "coach", t("nav_coach"), t("more_coach"))}
       ${item("#wall", "wall", t("nav_wall"), t("more_wall"))}
       ${item("#captain", "captain", t("nav_captain"), t("more_captain"))}
@@ -393,10 +523,11 @@ function vMore() {
 function statusCard(kind) {
   const link = (shareLink() || "").replace(/^https?:\/\//, "") || t("nosignup");
   if (kind === "rates") { const u = S.rates.usd; return { accent: "mint", kicker: t("s_dollar"), title: `$1 = ${fmtN(u.ngn)}`, big: fmtN(u.ngn * 5), bigSub: t("s_5") + " · " + fmtD(u.date), lines: [t("s_lead")], footer: t("nosignup"), link }; }
+  if (kind === "radar" && S.radar) return { accent: "coral", kicker: t("s_scam_k") + " · " + t("radar_live"), title: t("radar_top", { flag: S.radar.topFlags[0].flag }), big: String(S.radar.total), bigSub: t("radar_checked"), lines: S.radar.topFlags.slice(0, 3).map(f => `${f.flag} (${f.count})`), footer: t("s_scam_cta"), link };
   if (kind === "scam") return { accent: "coral", kicker: t("s_scam_k"), title: t("s_scam_h"), lines: [t("s_scam_1"), t("s_scam_2"), t("s_scam_3")], footer: t("s_scam_cta"), link };
   if (kind === "verdict") { const r = S.lastVerdict || {}; return { accent: r.verdict === "red" ? "coral" : "gold", kicker: t("s_scam_k"), title: r.summary || "", lines: [...(r.flags || []).slice(0, 4)], footer: t("s_scam_cta"), link }; }
   const raw = S.items.find(i => i.id === kind.split(":")[1]), it = it$(raw), l = raw.rolling ? null : left(raw.due);
-  return { accent: raw.rolling ? "mint" : "gold", kicker: `${t("cat_" + raw.cat)} · ${raw.rolling ? t("always_open") : dueLabel(raw)[0]}`, title: it.title, big: l && l.total ? `${l.d}d ${pad(l.h)}h` : null, bigSub: raw.rolling ? null : it.dueText, lines: [it.get, it.who], footer: t("free_apply"), link };
+  return { accent: raw.rolling ? "mint" : "gold", kicker: `${t("cat_" + raw.cat)} · ${raw.rolling ? t("always_open") : dueLabel(raw)[0]}`, title: it.title, big: l && l.total ? `${l.d}d ${pad(l.h)}h` : null, bigSub: raw.rolling ? null : it.dueText, lines: [naira(raw), it.get, it.who].filter(Boolean), footer: t("free_apply"), link };
 }
 async function shareImage(kind, btn) {
   buzz(); const old = btn.textContent; btn.textContent = t("loading"); btn.disabled = true;
@@ -460,9 +591,12 @@ document.addEventListener("click", async e => {
   const d = el.dataset;
   if ("quiz" in d) { e.preventDefault(); openQuiz(); }
   if (d.img) { e.preventDefault(); shareImage(d.img, el); }
+  if (d.writer) openWriter(d.writer);
+  if (d.alerts) d.alerts === "on" ? alertsOn() : alertsOff();
   if ("shareapp" in d) { const link = shareLink() || location.href; try { if (navigator.share) { await navigator.share({ title: "Unshaken", text: t("share_app_sub"), url: link }); S.shares++; store.set("u_shares", S.shares); } else { await copy(link, null); toast(t("copied")); } } catch {} }
   if ("install" in d && installEvt) { installEvt.prompt(); installEvt = null; }
   if (d.save || d.sprint || d.share) buzz();
+  if (d.save || d.sprint || d.unsprint) syncAlerts();
   if (d.cat) { S.cat = d.cat; store.set("u_cat", d.cat); }
   if (d.c) { S.cat = d.c; store.set("u_cat", d.c); renderView(); }
   if (d.save) { S.saved.has(d.save) ? S.saved.delete(d.save) : S.saved.add(d.save); store.set("u_saved", [...S.saved]); el.textContent = S.saved.has(d.save) ? t("saved") : t("save"); }
@@ -549,6 +683,8 @@ async function boot() {
     S.items = d.items; S.rates = d.rates; S.regions = d.regions || {}; S.updated = d.updated;
   } catch { $("#main").innerHTML = `<p class="empty">${t("error")}</p>`; return; }
   try { const h = await fetch("/api/health").then(r => r.ok ? r.json() : null); if (h && h.ok) S.env = { api: true, ai: !!h.ai, db: !!h.db }; } catch {}
+  S.alerts = store.get("u_alerts", false);
+  if (S.env.api) { api("push").then(p => { S.push = p; }).catch(() => {}); if (S.env.db) api("radar").then(r => { if (r.enabled) S.radar = r; }).catch(() => {}); }
   if (!S.env.api && window.claude?.use) claude.use("sample").then(x => { S.sample = x; }).catch(() => {});
   // referral visit (once per device per code)
   const ref = new URLSearchParams(location.search).get("c");
