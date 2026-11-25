@@ -1,5 +1,5 @@
 // Shared server helpers. Files starting with "_" are not exposed as routes by Vercel.
-import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 
 const SB_URL = () => process.env.SUPABASE_URL;
 const SB_KEY = () => process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -23,12 +23,57 @@ export function limited(req, route, max, windowMs = 60_000) {
   list.push(now); buckets.set(key, list);
   return list.length > max;
 }
+/** Owner check: a valid admin session cookie (PIN login), or the legacy x-admin-token header. */
 export function isAdmin(req) {
-  const want = process.env.ADMIN_TOKEN || "", got = String(req.headers["x-admin-token"] || "");
+  if (validSession(readCookie(req, SESSION_COOKIE))) return true;
+  return tokenMatches(String(req.headers["x-admin-token"] || ""));
+}
+function tokenMatches(got) {
+  const want = process.env.ADMIN_TOKEN || "";
   if (want.length < 16 || got.length !== want.length) return false;
   return timingSafeEqual(Buffer.from(want), Buffer.from(got));
 }
 export const sha256 = s => createHash("sha256").update(s).digest("hex");
+
+/* ---------- Admin PIN + session cookie ---------- */
+// ADMIN_PIN can be the PIN itself (6+ characters) or "sha256:<hex of sha256('unshaken-pin:' + PIN)>" so the plain PIN never sits in Vercel.
+export const SESSION_COOKIE = "u_admin";
+const SESSION_HOURS = 12;
+const pinHash = pin => sha256("unshaken-pin:" + pin);
+export const hasPin = () => { const p = process.env.ADMIN_PIN || ""; return p.startsWith("sha256:") ? p.length === 71 : p.length >= 6; };
+/** Hashed, constant-time PIN compare. Also accepts the legacy ADMIN_TOKEN so older setups can still log in. */
+export function pinMatches(pin) {
+  pin = String(pin || "");
+  if (!pin) return false;
+  if (hasPin()) {
+    const env = process.env.ADMIN_PIN, want = env.startsWith("sha256:") ? env.slice(7).toLowerCase() : pinHash(env);
+    if (timingSafeEqual(Buffer.from(want), Buffer.from(pinHash(pin)))) return true;
+  }
+  return tokenMatches(pin);
+}
+function sessionKey() {
+  return process.env.ADMIN_SESSION_SECRET || sha256(`session|${process.env.ADMIN_PIN || ""}|${process.env.ADMIN_TOKEN || ""}|${process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.CRON_SECRET || ""}`);
+}
+const sign = v => createHmac("sha256", sessionKey()).update(v).digest("base64url");
+export function newSession(now = Date.now()) {
+  const v = `${now + SESSION_HOURS * 3600e3}.${randomBytes(12).toString("base64url")}`;
+  return `${v}.${sign(v)}`;
+}
+export function validSession(tok, now = Date.now()) {
+  const m = /^(\d{10,16})\.([\w-]{16})\.([\w-]{43})$/.exec(String(tok || ""));
+  if (!m || Number(m[1]) < now || (!hasPin() && !process.env.ADMIN_TOKEN)) return false;
+  const want = sign(`${m[1]}.${m[2]}`);
+  return want.length === m[3].length && timingSafeEqual(Buffer.from(want), Buffer.from(m[3]));
+}
+export function readCookie(req, name) {
+  for (const part of String(req.headers.cookie || "").split(";")) {
+    const i = part.indexOf("="); if (i < 0) continue;
+    if (part.slice(0, i).trim() === name) return decodeURIComponent(part.slice(i + 1).trim());
+  }
+  return "";
+}
+export const sessionCookie = (tok, maxAge = SESSION_HOURS * 3600) =>
+  `${SESSION_COOKIE}=${tok}; Path=/api; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;
 export const code = (n = 6) => {
   const abc = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; const b = randomBytes(n);
   return Array.from(b, x => abc[x % abc.length]).join("");

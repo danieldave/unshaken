@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unshaken Daily</title>
+<meta name="description" content="Today's exchange rates and newly verified scholarships, free courses and earning doors. Free, no sign-up.">
+<meta name="theme-color" content="#07110D">
+<meta property="og:title" content="Unshaken Daily: rates and today's open doors">
+<meta property="og:description" content="Free. No sign-up. Every link is an official page.">
+<meta property="og:image" content="/icons/og.png">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#07110D;--card:#0F1D17;--card2:#14261E;--line:rgba(243,247,244,.13);--ink:#F3F7F4;--soft:#CFE0D6;--mute:#A9BDB2;--mint:#2BD38A;--gold:#F5B83D;--coral:#FF8A6B}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:radial-gradient(120% 60% at 50% 0%,#0F2A1E 0%,var(--bg) 60%);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;min-height:100vh}
+h1{font:700 clamp(28px,8vw,38px)/1.05 "Space Grotesk",sans-serif;margin:0;text-wrap:balance}
+a{color:var(--mint)}
+button,select,.btn{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+.wrap{max-width:600px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.logo{font:700 20px "Space Grotesk",sans-serif;text-decoration:none;color:var(--ink);display:flex;gap:8px;align-items:center}
+.logo img{width:30px;height:30px;border-radius:8px}
+select{min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);padding:0 10px}
+.kick{color:var(--gold);font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.sub{color:var(--soft);margin:8px 0 18px}
+.paper{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:20px;padding:20px 18px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.paper p{margin:0 0 10px;white-space:pre-wrap;word-break:break-word}
+.paper p.h{font:600 18px "Space Grotesk",sans-serif;color:var(--ink);margin-top:14px}
+.paper p.it{padding-left:12px;border-left:2px solid var(--line)}
+.paper .note{color:var(--mute);font-size:13px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:transparent;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--ink);cursor:pointer;padding:0 12px;text-align:center}
+.btn.go{background:var(--mint);color:var(--bg);border:0;grid-column:1/-1}
+.pill{display:inline-block;font-size:13px;border:1px solid var(--mint);color:var(--mint);border-radius:99px;padding:2px 10px;margin-left:6px}
+.beta{color:var(--gold);font-size:13px}
+.foot{color:var(--mute);font-size:13px;margin-top:20px;text-align:center}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><a class="logo" href="/"><img src="/icons/icon-192.png" alt="">Unshaken</a><select id="lang" aria-label="Language"></select></header>
+  <div class="kick" id="date"></div>
+  <h1 id="title">Today's digest</h1>
+  <p class="sub" id="sub"></p>
+  <p class="beta" id="beta" hidden></p>
+  <div class="paper" id="paper" aria-live="polite"><p class="note" id="status">Loading…</p></div>
+  <div class="actions" id="actions" hidden>
+    <button class="btn go" id="copy"></button>
+    <a class="btn" id="wa" target="_blank" rel="noopener"></a>
+    <a class="btn" id="tg" target="_blank" rel="noopener"></a>
+    <a class="btn" href="/" id="back" style="grid-column:1/-1"></a>
+  </div>
+  <p class="foot" id="foot"></p>
+</div>
+<script src="/i18n-ops.js"></script>
+<script>
+{
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const OPS = window.UNSHAKEN_OPS, LANGS = window.UNSHAKEN_OPS_LANGS;
+const q = new URLSearchParams(location.search);
+let lang = q.get("lang") || localStorage.getItem("u_lang_ops") || (localStorage.getItem("u_lang") || "").replace(/"/g, "") || "en";
+if (!OPS[lang]) lang = "en";
+const t = (k, v = {}) => String(OPS[lang]?.[k] ?? OPS.en[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? "");
+let text = "";
+
+// *bold* → <strong>, links clickable, one <p> per block
+function render(raw) {
+  const inline = s => esc(s).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>").replace(/(^|\s)_([^_\n]+)_(?=\s|$)/g, "$1<em>$2</em>").replace(/https:\/\/[^\s<)]+/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
+  return raw.split("\n").map(l => {
+    if (!l.trim()) return "";
+    const cls = /^\S+\s\*[^*]+\*(\s\(|$)/.test(l) ? "h" : /^\s{3}/.test(l) ? "it" : /^_.*_$/.test(l) ? "note" : "";
+    return `<p class="${cls}">${inline(l.trim())}</p>`;
+  }).join("");
+}
+function paint() {
+  document.documentElement.lang = lang;
+  $("#title").textContent = t("dg_title"); $("#sub").textContent = t("dg_sub");
+  $("#beta").hidden = lang === "en"; $("#beta").textContent = t("beta");
+  $("#copy").textContent = t("dg_copy"); $("#wa").textContent = t("dg_wa"); $("#tg").textContent = t("dg_tg"); $("#back").textContent = t("dg_back");
+  $("#foot").textContent = t("dg_free");
+  $("#date").textContent = new Date().toLocaleDateString(lang === "en" || lang === "pcm" ? "en-GB" : lang, { weekday: "long", day: "numeric", month: "long" });
+}
+async function load() {
+  paint();
+  $("#actions").hidden = true; $("#paper").innerHTML = `<p class="note">${esc(t("dg_loading"))}</p>`;
+  try {
+    const r = await fetch(`/api/listings?view=digest&lang=${encodeURIComponent(lang)}`);
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json(); text = d.text || "";
+    if (!text) throw new Error("empty");
+    $("#paper").innerHTML = render(text);
+    if (d.fresh) $("#title").insertAdjacentHTML("beforeend", ` <span class="pill">${esc(t("dg_fresh", { n: d.fresh }))}</span>`);
+    $("#wa").href = "https://wa.me/?text=" + encodeURIComponent(text);
+    $("#tg").href = "https://t.me/share/url?url=" + encodeURIComponent(location.origin + "/digest") + "&text=" + encodeURIComponent(text.slice(0, 3000));
+    $("#actions").hidden = false;
+  } catch { $("#paper").innerHTML = `<p class="note">${esc(t("dg_error"))}</p>`; }
+}
+$("#lang").innerHTML = LANGS.map(l => `<option value="${l.code}">${esc(l.name)}${l.code === "en" ? "" : " (beta)"}</option>`).join("");
+$("#lang").value = lang;
+$("#lang").onchange = e => { lang = e.target.value; localStorage.setItem("u_lang_ops", lang); history.replaceState(null, "", "?lang=" + lang); load(); };
+$("#copy").onclick = async () => {
+  try { await navigator.clipboard.writeText(text); } catch { const ta = document.createElement("textarea"); ta.value = text; document.body.append(ta); ta.select(); try { document.execCommand("copy"); } catch {} ta.remove(); }
+  const d = document.createElement("div"); d.className = "toast"; d.textContent = t("dg_copied"); document.body.append(d); setTimeout(() => d.remove(), 2000);
+};
+load();
+}
+</script>
+</body>
+</html>

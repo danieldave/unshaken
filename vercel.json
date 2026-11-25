@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/*.js": {
-      "maxDuration": 30
+      "maxDuration": 60,
+      "includeFiles": "config/**"
     }
   },
   "headers": [
@@ -47,12 +48,31 @@
           "value": "no-store"
         }
       ]
+    },
+    {
+      "source": "/digest.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        }
+      ]
     }
   ],
   "crons": [
     {
       "path": "/api/cron-alerts",
       "schedule": "0 7 * * *"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/digest",
+      "destination": "/digest.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
     }
   ]
 }

@@ -1,0 +1,104 @@
+{
+  "_readme": "Curated OFFICIAL sources for the daily draft generator (api/cron-alerts.js → api/_queue.js). type 'rss' = RSS/Atom feed (works with no AI key: items become raw drafts). type 'page' = a normal web page; it is only read when OPENAI_API_KEY is set (AI picks out open calls and must use links that appear on the page). 'keywords' filters feed items by title/summary (any match). 'maxAgeDays' ignores older feed items. 'cat' is the default category. Set 'enabled': false to pause a source. Add only official sites (governments, universities, foundations, UN/IMF/World Bank) — never blogs or aggregators. 'checked' is the date the URL was last confirmed to load; re-check any source that shows an error in the admin 'Fetch drafts now' result.",
+  "maxDraftsPerRun": 8,
+  "sources": [
+    {
+      "id": "csc-uk-news",
+      "name": "Commonwealth Scholarship Commission (UK) – news feed",
+      "type": "rss",
+      "url": "https://cscuk.fcdo.gov.uk/feed/",
+      "cat": "Go",
+      "keywords": ["scholarship", "fellowship", "applications", "open", "call"],
+      "maxAgeDays": 30,
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "govuk-scholarships",
+      "name": "GOV.UK – news mentioning scholarships (Chevening, Commonwealth, FCDO)",
+      "type": "rss",
+      "url": "https://www.gov.uk/search/news-and-communications.atom?keywords=scholarship",
+      "cat": "Go",
+      "keywords": ["scholarship", "fellowship", "applications open"],
+      "maxAgeDays": 21,
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "reliefweb-training",
+      "name": "ReliefWeb (UN OCHA) – free training (filter for free/online)",
+      "type": "rss",
+      "url": "https://reliefweb.int/training/rss.xml",
+      "cat": "Learn",
+      "keywords": ["free", "online", "webinar", "e-learning", "course"],
+      "maxAgeDays": 10,
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "reliefweb-jobs-remote",
+      "name": "ReliefWeb (UN OCHA) – jobs (remote / home-based)",
+      "type": "rss",
+      "url": "https://reliefweb.int/jobs/rss.xml",
+      "cat": "Earn",
+      "keywords": ["remote", "home-based", "home based", "consultant", "intern"],
+      "maxAgeDays": 7,
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "cern-careers-students",
+      "name": "CERN careers – student and graduate programmes",
+      "type": "page",
+      "url": "https://careers.cern/summer",
+      "cat": "Go",
+      "enabled": true,
+      "checked": "2026-11-25"
+    },
+    {
+      "id": "csc-uk-scholarships",
+      "name": "Commonwealth Scholarship Commission – Shared Scholarships page",
+      "type": "page",
+      "url": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-shared-scholarships-applications/",
+      "cat": "Go",
+      "enabled": true,
+      "checked": "2026-11-25"
+    },
+    {
+      "id": "swiss-government-excellence",
+      "name": "Swiss Government Excellence Scholarships (SERI)",
+      "type": "page",
+      "url": "https://www.sbfi.admin.ch/scholarships_eng",
+      "cat": "Go",
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "world-bank-jjwbgsp",
+      "name": "Joint Japan/World Bank Graduate Scholarship Program",
+      "type": "page",
+      "url": "https://worldbank.org/en/programs/scholarships/jj-wbgsp",
+      "cat": "Go",
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "obama-leaders",
+      "name": "Obama Foundation Leaders programmes",
+      "type": "page",
+      "url": "https://www.obama.org/programs/leaders/",
+      "cat": "Grow",
+      "enabled": true,
+      "checked": ""
+    },
+    {
+      "id": "unv-online",
+      "name": "UN Volunteers – online volunteering",
+      "type": "page",
+      "url": "https://www.unv.org/become-online-volunteer",
+      "cat": "Grow",
+      "enabled": false,
+      "checked": "2026-11-25"
+    }
+  ]
+}

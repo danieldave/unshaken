@@ -1,0 +1,648 @@
+{
+  "verified_on": "2026-11-25",
+  "note": "First 20 listings, researched 25 Nov 2026. Every item was checked against its official page (or the official page's own text in search results where the page blocked automated reading — see each item's notes). All are free to apply: no application fee, no agent, no VPN. They load as status 'draft'. Open each official link in the admin queue and approve only what you are happy with.",
+  "items": [
+    {
+      "id": "yenching-2027",
+      "cat": "Go",
+      "title": "Yenching Academy of Peking University: Master's in China Studies (Yenching Fellowship)",
+      "get": "A 2-year Master's in China Studies at Peking University, Beijing. The first-year Yenching Fellowship covers tuition, on-campus housing, basic medical insurance, a monthly stipend and one round trip; the second year is renewable with good standing.",
+      "who": "Non-Chinese citizens with a Bachelor's degree (or finishing one before September 2027), any subject. Average entrant is about 23.",
+      "steps": [
+        "Create an account on the Yenching Academy admissions portal",
+        "Write the personal statement (max 750 words) and research statement; prepare a 2-page CV",
+        "Upload official transcripts and an English test score (TOEFL/IELTS taken after 1 Sep 2026; TOEFL code C488)",
+        "Ask recommenders (full or associate professors) to submit their letters",
+        "Submit before 30 Nov 2026, 9:00am Beijing time (01:00 GMT)"
+      ],
+      "link": "https://yenchingacademy.pku.edu.cn/ADMISSIONS.htm",
+      "source_url": "https://yenchingacademy.pku.edu.cn/ADMISSIONS.htm",
+      "due": "2026-11-30T01:00:00Z",
+      "due_text": "30 Nov 2026, 9:00am Beijing (01:00 GMT)",
+      "rolling": false,
+      "elig": {
+        "levels": [
+          "master"
+        ],
+        "exclude": [
+          "CN"
+        ]
+      },
+      "tags": [
+        "scholarship",
+        "masters",
+        "fully-funded",
+        "china",
+        "closing-soon"
+      ],
+      "flag": "Closes in days. Only realistic if your transcripts and English test are already in hand. Students or alumni of partner universities must go through their own university first.",
+      "notes": "Deadline confirmed on the official admissions page (yenchingacademy.pku.edu.cn/ADMISSIONS.htm). Funding details from partner-university guides (UCT, Wisconsin). No application fee mentioned."
+    },
+    {
+      "id": "obama-leaders-africa-2027",
+      "cat": "Grow",
+      "title": "Obama Foundation Leaders Africa 2027–2028",
+      "get": "A free, mostly virtual leadership programme (about 8 months) with coaching, peer learning and in-person convening; afterwards you join the Obama Leadership Network.",
+      "who": "Leaders aged 24–45 who live in an African country (citizen, permanent resident, or 5+ years' residence), work for positive change in Africa, have 3+ years of relevant experience and professional English.",
+      "steps": [
+        "Read the eligibility list on the Leaders Africa page",
+        "Prepare short answers about your work, your community and the change you lead",
+        "Fill in the online application from the Leaders Africa page",
+        "Submit before 4 Dec 2026, 12:00 noon US Central (18:00 GMT)"
+      ],
+      "link": "https://www.obama.org/programs/leaders/africa",
+      "source_url": "https://www.obama.org/programs/leaders/",
+      "due": "2026-12-04T18:00:00Z",
+      "due_text": "4 Dec 2026, 12pm US Central (18:00 GMT)",
+      "rolling": false,
+      "elig": {
+        "region": "AFRICA"
+      },
+      "tags": [
+        "fellowship",
+        "leadership",
+        "free",
+        "virtual",
+        "africa"
+      ],
+      "flag": "The 23 Nov priority deadline has passed; the final deadline (4 Dec) comes from the Foundation's announcement. Confirm it on the application form.",
+      "notes": "obama.org/programs/leaders/africa says 2027-2028 applications are open; obama.org/programs/leaders states the 23 Nov 2026 priority deadline. Final deadline 4 Dec 2026 12pm CT reported consistently by several outlets. Free to all participants."
+    },
+    {
+      "id": "commonwealth-shared-2027",
+      "cat": "Go",
+      "title": "Commonwealth Shared Scholarships 2027/28 (UK Master's)",
+      "get": "A fully funded one-year Master's in the UK: tuition, return airfare, a monthly stipend of £1,712 (£2,000 in London), plus thesis and study-travel grants.",
+      "who": "Citizens and permanent residents of 43 eligible Commonwealth countries (including Nigeria, Ghana, Kenya, South Africa, Uganda, Tanzania, Rwanda, Zambia, Malawi, Sierra Leone, India, Pakistan, Bangladesh) with at least a 2:1 first degree, who could not otherwise afford UK study.",
+      "steps": [
+        "Pick an approved Master's course at a participating UK university (list on the CSC page)",
+        "Apply to that university for admission separately, by its own deadline",
+        "Register on CSC Central and draft your answers offline first",
+        "Upload passport/ID, all transcripts and at least two signed PDF references",
+        "Submit before 8 Dec 2026, 16:00 GMT"
+      ],
+      "link": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-shared-scholarships-applications/",
+      "source_url": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-shared-scholarships-applications/",
+      "due": "2026-12-08T16:00:00Z",
+      "due_text": "8 Dec 2026, 16:00 GMT",
+      "rolling": false,
+      "elig": {
+        "levels": [
+          "master"
+        ],
+        "countries": [
+          "BD",
+          "BZ",
+          "BW",
+          "DM",
+          "SZ",
+          "FJ",
+          "GA",
+          "GH",
+          "GD",
+          "GY",
+          "IN",
+          "JM",
+          "KE",
+          "KI",
+          "LS",
+          "MW",
+          "MY",
+          "MV",
+          "MU",
+          "MS",
+          "MZ",
+          "NA",
+          "NR",
+          "NG",
+          "PK",
+          "PG",
+          "RW",
+          "SH",
+          "LC",
+          "VC",
+          "WS",
+          "SL",
+          "SB",
+          "ZA",
+          "LK",
+          "TZ",
+          "GM",
+          "TG",
+          "TO",
+          "TV",
+          "UG",
+          "VU",
+          "ZM"
+        ]
+      },
+      "tags": [
+        "scholarship",
+        "masters",
+        "fully-funded",
+        "uk",
+        "commonwealth"
+      ],
+      "flag": "You must not have studied or worked for a year or more in a high-income country. Universities nominate in March 2027.",
+      "notes": "Read on the official CSC applications page: country list, 16:00 GMT 8 Dec 2026 deadline, benefits and steps. CSC charges no application fee."
+    },
+    {
+      "id": "cern-summer-2027",
+      "cat": "Go",
+      "title": "CERN Summer Student Programme 2027 (Member and Non-Member State)",
+      "get": "8–13 weeks working on a real CERN research team in Geneva (non-member-state students: about 2 months), with lectures and visits. CHF 94 net per day, health insurance, possible travel support and help finding housing.",
+      "who": "Bachelor's or Master's students (not PhD) in physics, engineering, computing or maths who have completed at least 6 semesters (3 years) by the summer, have good English, and have never done the programme. All nationalities (US, Canadian and Japanese nationals apply through their own national sites).",
+      "steps": [
+        "Open the 2027 Summer Student posting (SUMM-2027) from careers.cern/summer",
+        "Prepare your CV in English or French, an enrolment certificate and official transcripts",
+        "Ask one academic referee for a reference letter",
+        "Apply online (about 15 minutes) before 21 Jan 2027, 23:59 Geneva time",
+        "Be ready for a possible online interview"
+      ],
+      "link": "https://careers.cern/summer",
+      "source_url": "https://home.cern/summer-student-programme",
+      "due": "2027-01-21T22:59:00Z",
+      "due_text": "21 Jan 2027, 23:59 Geneva",
+      "rolling": false,
+      "elig": {
+        "fields": [
+          "stem"
+        ],
+        "student": true
+      },
+      "tags": [
+        "internship",
+        "paid",
+        "physics",
+        "engineering",
+        "computing",
+        "switzerland"
+      ],
+      "flag": "",
+      "notes": "careers.cern/summer read directly (eligibility, CHF 94/day, documents). Deadline 21/01/2027 23:59 Geneva from the official SUMM-2027 posting as syndicated; home.cern says all nationals welcome. No fee."
+    },
+    {
+      "id": "cern-openlab-2027",
+      "cat": "Earn",
+      "title": "CERN openlab Summer Student Programme 2027 (computing)",
+      "get": "A paid 9-week advanced-computing project at CERN, Geneva (June–August 2027), CHF 94 per calendar day, ending with a public presentation of your work.",
+      "who": "Bachelor's or Master's students in computer science, data science, IT or related fields who stay enrolled full-time through the summer.",
+      "steps": [
+        "Read the openlab programme page and pick the areas that fit you",
+        "Prepare your CV (English or French), transcripts and enrolment proof",
+        "Apply through the CERN careers posting SUM-OPENLAB-2027",
+        "Submit before 21 Jan 2027, 23:59 Geneva time"
+      ],
+      "link": "https://openlab.cern/cern-openlab-summer-student-programme",
+      "source_url": "https://openlab.cern/cern-openlab-summer-student-programme",
+      "due": "2027-01-21T22:59:00Z",
+      "due_text": "21 Jan 2027, 23:59 Geneva",
+      "rolling": false,
+      "elig": {
+        "fields": [
+          "stem"
+        ],
+        "student": true
+      },
+      "tags": [
+        "internship",
+        "paid",
+        "computing",
+        "data-science",
+        "switzerland"
+      ],
+      "flag": "Separate from the main Summer Student Programme; you can check both.",
+      "notes": "openlab.cern says the 2027 call is open (9 weeks, start 21 or 28 June 2027, 94 CHF/day). Deadline 21/01/2027 from the official CERN careers posting (careers.cern, SUM-OPENLAB-2027)."
+    },
+    {
+      "id": "pollination-seed-grant",
+      "cat": "Grow",
+      "title": "The Pollination Project Daily Seed Grant",
+      "get": "A one-time $1,000 seed grant for a volunteer-led community project, plus support connecting with other funders.",
+      "who": "Individuals, informal groups and very early nonprofits anywhere in the world: volunteer-led, no paid staff, project budget under $10,000, organisation budget under $50,000, work already started, first-time applicant, able to receive USD by wire or PayPal.",
+      "steps": [
+        "Check the eligibility list on the Apply page",
+        "Describe your project, what you have already done and how $1,000 moves it forward",
+        "International applicants: add a referee's contact",
+        "Submit the online form in English (email is not accepted)",
+        "Decisions take about 6–12 weeks"
+      ],
+      "link": "https://thepollinationproject.org/apply/",
+      "source_url": "https://thepollinationproject.org/apply/",
+      "due": "2026-12-01T04:59:00Z",
+      "due_text": "30 Nov 2026, 11:59pm US Eastern · reopens 1 Jan 2027",
+      "rolling": false,
+      "elig": {},
+      "tags": [
+        "grant",
+        "community",
+        "volunteer",
+        "worldwide",
+        "seed-funding"
+      ],
+      "flag": "Closes for 2026 on 30 Nov; if you miss it, the form reopens on 1 Jan 2027. When it expires, roll the deadline to the next window instead of deleting it.",
+      "notes": "Read on thepollinationproject.org/apply: eligibility, budget limits, closing 30 Nov 11:59pm ET, reopening 1 Jan 2027. $1,000 amount from the same page's selection criteria. No fee."
+    },
+    {
+      "id": "imf-economist-program-2027",
+      "cat": "Earn",
+      "title": "IMF Economist Program (EP) 2027",
+      "get": "A salaried, 3-year rotational economist job at IMF headquarters in Washington, D.C. from September 2027, with two departmental assignments and a path to a long-term IMF career.",
+      "who": "Citizens of IMF member countries who have recently completed (or are within a year of completing) a PhD in macroeconomics or a related field, under 34 at the start, with excellent English.",
+      "steps": [
+        "Read the Economist Program page and the 2027 vacancy (Workday ref. 26-R9861)",
+        "Prepare your CV, research summary and transcripts",
+        "Apply online on the IMF careers site (Workday)",
+        "Submit before 5 Dec 2026, 11:59pm Washington time",
+        "Expect assessments and interviews in December–January"
+      ],
+      "link": "https://www.imf.org/en/about/careers/economist-program",
+      "source_url": "https://imf.wd5.myworkdayjobs.com/en-US/IMF/job/USA-Washington-DC/Economist-Program-2027_26-R9861",
+      "due": "2026-12-06T04:59:00Z",
+      "due_text": "5 Dec 2026, 11:59pm Washington (EST)",
+      "rolling": false,
+      "elig": {
+        "levels": [
+          "phd"
+        ]
+      },
+      "tags": [
+        "job",
+        "paid",
+        "economics",
+        "phd",
+        "international-organisation"
+      ],
+      "flag": "",
+      "notes": "Programme facts from imf.org/en/about/careers/economist-program and the IMF EP brief PDF; deadline 5 Dec 2026 from the IMF Workday posting 26-R9861 as syndicated by UN job boards. IMF never charges fees."
+    },
+    {
+      "id": "imf-fip-2027",
+      "cat": "Earn",
+      "title": "IMF Fund Internship Program (FIP) 2027 – Economists",
+      "get": "A paid, full-time 10–12 week research internship at IMF headquarters in Washington, D.C. (7 June – 27 August 2027).",
+      "who": "PhD students within one to two years of completing a PhD in macroeconomics or a related field; previous FIP interns cannot reapply.",
+      "steps": [
+        "Find the 2027 FIP – Economists posting via the IMF careers 'find the right job' page",
+        "Prepare your CV, a university letter confirming enrolment and recent grades",
+        "Complete the online application and technical questionnaire",
+        "Submit by 4 Dec 2026 to be safe (posting closes 5 Dec 2026)"
+      ],
+      "link": "https://www.imf.org/en/about/recruitment/find-the-right-imf-job",
+      "source_url": "https://www.unjobnet.org/jobs/detail/imf-2027-fund-internship-program-fip-economists-89271049",
+      "due": "2026-12-05T04:59:00Z",
+      "due_text": "4–5 Dec 2026 (submit by 4 Dec)",
+      "rolling": false,
+      "elig": {
+        "levels": [
+          "phd"
+        ],
+        "student": true
+      },
+      "tags": [
+        "internship",
+        "paid",
+        "economics",
+        "phd"
+      ],
+      "flag": "Job boards show 4 or 5 Dec 2026 for Workday posting 26-R9863. The deadline here uses the earlier date.",
+      "notes": "FIP described on imf.org recruitment pages; 2027 dates (7 Jun–27 Aug 2027) and deadline from the IMF posting 26-R9863 as syndicated (unjobnet, unvacancies). Paid internship."
+    },
+    {
+      "id": "ibm-skillsbuild",
+      "cat": "Learn",
+      "title": "IBM SkillsBuild: free courses with IBM digital credentials",
+      "get": "1,000+ free online courses (AI, cybersecurity, data analytics, IT support, cloud, workplace skills) and IBM-branded digital badges you can share on LinkedIn and your CV.",
+      "who": "Anyone: adult learners, job seekers, high school and university students. Free sign-up.",
+      "steps": [
+        "Open skillsbuild.org and choose the adult learner (or student) path",
+        "Create a free account",
+        "Pick a learning plan, e.g. AI Fundamentals or Cybersecurity Fundamentals",
+        "Finish the modules and quizzes to earn the badge",
+        "Accept the badge by email and add it to LinkedIn"
+      ],
+      "link": "https://skillsbuild.org/",
+      "source_url": "https://skillsbuild.org/about",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "ai",
+        "cybersecurity",
+        "data"
+      ],
+      "flag": "",
+      "notes": "skillsbuild.org/about: free, IBM-branded digital credentials. Corroborated by IBM and university partner pages. Always open."
+    },
+    {
+      "id": "kaggle-learn",
+      "cat": "Learn",
+      "title": "Kaggle Learn: free data science and AI micro-courses",
+      "get": "Short hands-on courses (Python, Pandas, Intro to Machine Learning, Deep Learning, SQL and more), each about 3–5 hours in the browser, with a free certificate of completion.",
+      "who": "Anyone with a free Kaggle account. No laptop install needed; runs in the browser.",
+      "steps": [
+        "Create a free Kaggle account",
+        "Open kaggle.com/learn and start with Python or Intro to Machine Learning",
+        "Do every exercise notebook in the course",
+        "Download the certificate from your profile when the course is complete"
+      ],
+      "link": "https://www.kaggle.com/learn",
+      "source_url": "https://www.kaggle.com/learn",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "python",
+        "machine-learning",
+        "data"
+      ],
+      "flag": "",
+      "notes": "Kaggle certificate pages (kaggle.com/learn/certification/...) show 'Certificate of Completion'; free. Always open."
+    },
+    {
+      "id": "cisco-netacad",
+      "cat": "Learn",
+      "title": "Cisco Networking Academy: free self-paced IT courses",
+      "get": "Free self-paced courses in networking, cybersecurity, Python, data science and IT, with free Cisco digital badges (Credly) and preparation for industry certifications.",
+      "who": "Anyone. Self-paced courses are free; instructor-led classes are priced by the local academy.",
+      "steps": [
+        "Open Cisco Networking Academy and create a free account",
+        "Pick a self-paced course, e.g. Introduction to Cybersecurity or Networking Basics",
+        "Complete modules, labs and the final assessment",
+        "Claim your badge and add it to LinkedIn"
+      ],
+      "link": "https://www.netacad.com/",
+      "source_url": "https://www.cisco.com/site/us/en/learn/training-certifications/training/netacad/index.html",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "badge",
+        "networking",
+        "cybersecurity",
+        "it-support"
+      ],
+      "flag": "Choose the free self-paced versions. Paid instructor-led classes exist at some local academies.",
+      "notes": "cisco.com NetAcad page: 'Explore our free, self-paced online courses'; NetAcad course pages: self-paced classes free, badges free. Always open."
+    },
+    {
+      "id": "hubspot-academy",
+      "cat": "Learn",
+      "title": "HubSpot Academy: free marketing, sales and service certifications",
+      "get": "Free courses and certification exams (Inbound Marketing, Content Marketing, Social Media, Email Marketing, Digital Advertising and more) with badges for LinkedIn.",
+      "who": "Anyone with a free HubSpot account.",
+      "steps": [
+        "Create a free HubSpot Academy account",
+        "Choose a certification, e.g. Inbound Marketing or Content Marketing",
+        "Watch the lessons and pass the quizzes",
+        "Pass the certification exam and download your certificate"
+      ],
+      "link": "https://academy.hubspot.com/certification",
+      "source_url": "https://academy.hubspot.com/certification",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "marketing",
+        "sales",
+        "digital-skills"
+      ],
+      "flag": "Some software certifications need a paid HubSpot plan for practical exercises; the marketing certifications above do not.",
+      "notes": "academy.hubspot.com/certification: 'Completely free & online'. Always open."
+    },
+    {
+      "id": "microsoft-learn",
+      "cat": "Learn",
+      "title": "Microsoft Learn: free training paths and Applied Skills",
+      "get": "Free self-paced training on AI, Azure cloud, data, security and Microsoft 365, with achievements, free sandboxes, and scenario-based Applied Skills credentials you earn in a lab assessment.",
+      "who": "Anyone with a free Microsoft account.",
+      "steps": [
+        "Sign in to Microsoft Learn with a personal Microsoft account",
+        "Pick a learning path (e.g. AI fundamentals) and finish the modules",
+        "Browse Applied Skills and choose a beginner-level credential",
+        "Pass the online lab assessment and share the credential"
+      ],
+      "link": "https://learn.microsoft.com/en-us/credentials/applied-skills",
+      "source_url": "https://learn.microsoft.com/en-us/training/support/faq",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "credential",
+        "ai",
+        "cloud",
+        "microsoft"
+      ],
+      "flag": "Training is free. Full Microsoft Certification exams are paid; this listing is about the free training and Applied Skills.",
+      "notes": "Microsoft Learn FAQ: 'Microsoft Learn training is free and available to anyone'. Applied Skills page describes lab-based credentials. Confirm a chosen Applied Skills assessment shows no fee before approving."
+    },
+    {
+      "id": "openlearn",
+      "cat": "Learn",
+      "title": "OpenLearn (The Open University): 1,000 free courses",
+      "get": "Around 1,000 free university-level short courses, each with a free downloadable Statement of Participation; badged courses add a free digital badge.",
+      "who": "Anyone, any time; no cohorts or time limits.",
+      "steps": [
+        "Create a free OpenLearn account",
+        "Search a subject or a 'skills for work' course",
+        "Enrol and complete every section and quiz",
+        "Download your Statement of Participation from your profile"
+      ],
+      "link": "https://www.open.edu/openlearn/free-courses/full-catalogue",
+      "source_url": "https://university.open.ac.uk/open-educational-resources/openlearn/free-courses",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "university",
+        "self-paced"
+      ],
+      "flag": "Statements of Participation are not formal university credit.",
+      "notes": "open.ac.uk OpenLearn page: free courses, free Statement of Participation, no time limits. Confirm the catalogue link opens before approving (fallback: https://www.open.edu/openlearn/)."
+    },
+    {
+      "id": "google-skillshop",
+      "cat": "Learn",
+      "title": "Google Skillshop: free Google Ads and Analytics certifications",
+      "get": "Free training and foundational certifications from Google for Google Ads (Search, Display, Video, Shopping, Measurement) and Google Analytics, valid for a year.",
+      "who": "Anyone with a Google account.",
+      "steps": [
+        "Sign in to Skillshop with a Google account",
+        "Choose Google Ads Search or Google Analytics",
+        "Study the free modules",
+        "Pass the timed assessment (about 75 minutes, 80% to pass) and download the certificate"
+      ],
+      "link": "https://skillshop.withgoogle.com/",
+      "source_url": "https://support.google.com/skillshop/answer/14744470",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "digital-marketing",
+        "google"
+      ],
+      "flag": "Foundational certifications are free; Google has said newer proctored 'professional' certifications will not stay free.",
+      "notes": "Skillshop help centre (support.google.com/skillshop) describes certifications and that foundational ones remain free; professional ones are proctored and limited. Always open."
+    },
+    {
+      "id": "saylor-academy",
+      "cat": "Learn",
+      "title": "Saylor Academy: free courses with free certificates",
+      "get": "100+ free self-paced college-level courses (business, computer science, maths, English and more) with a free, verifiable certificate when you pass the final exam (70%+).",
+      "who": "Anyone with a free account.",
+      "steps": [
+        "Create a free account on learn.saylor.org",
+        "Pick a course from the catalogue",
+        "Study the units at your own pace",
+        "Pass the Certificate Final Exam (70%+; you can retake after 7 days) and download your certificate"
+      ],
+      "link": "https://learn.saylor.org/course/index.php",
+      "source_url": "https://support.saylor.org/hc/en-us/articles/23586212781844",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "business",
+        "computer-science"
+      ],
+      "flag": "",
+      "notes": "Saylor support FAQ: no tuition or fees; course completion certificates are free; pass the final exam (usually 70%+). Always open."
+    },
+    {
+      "id": "huggingface-agents",
+      "cat": "Learn",
+      "title": "Hugging Face AI Agents Course (free, certified)",
+      "get": "A free hands-on course on building AI agents (smolagents, LlamaIndex, LangGraph), with a free fundamentals certificate after Unit 1 and a certificate of completion after the final project.",
+      "who": "Anyone with basic Python and a free Hugging Face account. No deadline.",
+      "steps": [
+        "Create a free Hugging Face account",
+        "Start the Agents Course at huggingface.co/learn/agents-course",
+        "Finish Unit 1 and pass its quiz (80%) for the fundamentals certificate",
+        "Complete a use-case assignment and the final challenge for the full certificate"
+      ],
+      "link": "https://huggingface.co/learn/agents-course",
+      "source_url": "https://huggingface.co/learn/agents-course/en/unit0/introduction",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "free-course",
+        "certificate",
+        "ai",
+        "python",
+        "agents"
+      ],
+      "flag": "",
+      "notes": "Official course pages: free; certificate requirements; 'There's no deadline for the certification process.'"
+    },
+    {
+      "id": "unv-online-volunteering",
+      "cat": "Grow",
+      "title": "UN Volunteers: Online Volunteering",
+      "get": "Remote volunteer assignments (research, design, writing, translation, data, web) with UN agencies and NGOs, up to 20 hours a week, plus a certificate of appreciation. Unpaid: experience for your CV.",
+      "who": "Anyone 18+, anywhere, with internet access.",
+      "steps": [
+        "Register on the UN Unified Volunteering Platform (app.unv.org)",
+        "Complete your professional profile and skills",
+        "Search online assignments that match your skills",
+        "Apply; organisations choose their volunteers"
+      ],
+      "link": "https://www.unv.org/become-online-volunteer",
+      "source_url": "https://www.unv.org/become-online-volunteer",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {},
+      "tags": [
+        "volunteer",
+        "remote",
+        "experience",
+        "un"
+      ],
+      "flag": "No pay. Real UN assignments never ask you for money.",
+      "notes": "unv.org/become-online-volunteer: everyone can apply from anywhere, must be 18+. UNV materials: free of charge, no financial compensation."
+    },
+    {
+      "id": "outlier-ai",
+      "cat": "Earn",
+      "title": "Outlier (Scale AI): paid AI training tasks",
+      "get": "Paid remote work writing, rating and improving AI answers in your subject or language, paid weekly.",
+      "who": "Adults working from a country on Outlier's permitted list. In Africa that list currently includes Algeria, Cameroon, Egypt, Madagascar, Malawi, Morocco, South Africa and Tanzania. Many countries, including Nigeria, Kenya and Ghana, are not on it.",
+      "steps": [
+        "Check that your country is on Outlier's Flexible Working Guidelines list",
+        "Sign up on outlier.ai with your real identity and location",
+        "Pass the skills assessment for your field or language",
+        "Take on projects as they appear; you are paid for approved work"
+      ],
+      "link": "https://outlier.ai/legal/flexible-working-guidelines",
+      "source_url": "https://outlier.ai/legal/flexible-working-guidelines",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {
+        "partnerCheck": true
+      },
+      "tags": [
+        "remote-work",
+        "ai-training",
+        "paid",
+        "freelance"
+      ],
+      "flag": "Using a VPN to hide your location is against Outlier's rules and gets accounts closed. Outlier never charges a fee. Check the country list before you sign up.",
+      "notes": "Outlier Flexible Working Guidelines page read directly: African countries listed (Algeria, Cameroon, Egypt, Madagascar, Malawi, Morocco, South Africa, Tanzania) and 'the use of VPNs ... is not permitted'. Re-check the list before approving; it changes."
+    },
+    {
+      "id": "toloka-tolokers",
+      "cat": "Earn",
+      "title": "Toloka: micro-tasks for AI (Tolokers)",
+      "get": "Small paid online tasks that help train AI (labelling, rating, short recordings) on phone or computer; pay is per task and low but instant to start.",
+      "who": "Adults in most countries (100+). Check Toloka's eligibility and geographic restrictions page for yours.",
+      "steps": [
+        "Check your country on Toloka's eligibility page",
+        "Sign up at toloka.ai/tolokers (web or app) with your real details",
+        "Do the training tasks to unlock paid work",
+        "Withdraw to a supported payout method (check the current options in the app)"
+      ],
+      "link": "https://toloka.ai/tolokers/en",
+      "source_url": "https://toloka.ai/legal/eligibility-and-geographic-restrictions",
+      "due": null,
+      "due_text": "",
+      "rolling": true,
+      "elig": {
+        "partnerCheck": true
+      },
+      "tags": [
+        "remote-work",
+        "micro-tasks",
+        "ai-training",
+        "paid",
+        "beginner"
+      ],
+      "flag": "Pay is small; treat it as pocket money. Never pay anyone to 'unlock' tasks or withdrawals.",
+      "notes": "toloka.ai/tolokers official page and toloka.ai/legal/eligibility-and-geographic-restrictions; app store listing says free. Confirm current payout options before approving."
+    }
+  ]
+}

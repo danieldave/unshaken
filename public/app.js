@@ -683,6 +683,14 @@ async function boot() {
     S.items = d.items; S.rates = d.rates; S.regions = d.regions || {}; S.updated = d.updated;
   } catch { $("#main").innerHTML = `<p class="empty">${t("error")}</p>`; return; }
   try { const h = await fetch("/api/health").then(r => r.ok ? r.json() : null); if (h && h.ok) S.env = { api: true, ai: !!h.ai, db: !!h.db }; } catch {}
+  // Listings the owner approved in the admin queue (only status=approved ever comes back from this endpoint)
+  if (S.env.db) {
+    try {
+      const live = await fetch("/api/listings").then(r => r.ok ? r.json() : null);
+      const have = new Set(S.items.map(i => i.id)), links = new Set(S.items.map(i => String(i.link).replace(/\/+$/, "")));
+      for (const it of live?.items || []) if (!have.has(it.id) && !links.has(String(it.link).replace(/\/+$/, ""))) S.items.push(it);
+    } catch {}
+  }
   S.alerts = store.get("u_alerts", false);
   if (S.env.api) { api("push").then(p => { S.push = p; }).catch(() => {}); if (S.env.db) api("radar").then(r => { if (r.enabled) S.radar = r; }).catch(() => {}); }
   if (!S.env.api && window.claude?.use) claude.use("sample").then(x => { S.sample = x; }).catch(() => {});
