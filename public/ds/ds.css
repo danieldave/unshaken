@@ -1,0 +1,109 @@
+/* ─────────────────────────────────────────────────────────────
+   Olusoji Design System (ODS) v1
+   Linear's speed & calm · Stripe's clarity · Things' restraint.
+   Use: <link rel="stylesheet" href="/ds/ds.css"> then the classes below,
+   or just the CSS variables. Dark by default when the device prefers it.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  color-scheme: light dark;
+  /* light */
+  --bg:#fbfbfa; --bg-2:#f4f4f2; --surface:#ffffff; --raised:#ffffff;
+  --text:#0f1115; --text-2:#3c4049; --muted:#6b707a; --faint:#9aa0aa;
+  --line:rgba(15,17,21,.08); --line-2:rgba(15,17,21,.14);
+  --accent:#f08a00; --accent-2:#ffb547; --accent-ink:#1a1205; --accent-soft:rgba(240,138,0,.10);
+  --indigo:#5e6ad2; --green:#1f9d62; --red:#e5484d; --amber:#d97706; --blue:#2f6fed; --purple:#8e4ec6;
+  --glow:radial-gradient(60% 60% at 50% 0%,rgba(240,138,0,.10),transparent 70%);
+  --shadow-1:0 1px 0 rgba(15,17,21,.03),0 1px 2px rgba(15,17,21,.06);
+  --shadow-2:0 8px 28px rgba(15,17,21,.08),0 1px 2px rgba(15,17,21,.06);
+  --shadow-3:0 24px 60px rgba(15,17,21,.16);
+  --r-1:8px; --r-2:12px; --r-3:16px; --r-pill:999px;
+  --font:"Inter","InterVariable",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1); --t-1:120ms; --t-2:180ms; --t-3:260ms;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#08090a; --bg-2:#0d0e10; --surface:#101113; --raised:#16171a;
+  --text:#f7f8f8; --text-2:#d0d3d9; --muted:#8a8f98; --faint:#62666d;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.12);
+  --accent:#ffa41b; --accent-2:#ffc061; --accent-soft:rgba(255,164,27,.12);
+  --glow:radial-gradient(60% 60% at 50% 0%,rgba(255,164,27,.14),transparent 70%);
+  --shadow-1:0 1px 0 rgba(0,0,0,.4); --shadow-2:0 10px 30px rgba(0,0,0,.45); --shadow-3:0 30px 80px rgba(0,0,0,.6);
+}}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#08090a; --bg-2:#0d0e10; --surface:#101113; --raised:#16171a; --text:#f7f8f8; --text-2:#d0d3d9; --muted:#8a8f98; --faint:#62666d;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.12); --accent:#ffa41b; --accent-2:#ffc061; --accent-soft:rgba(255,164,27,.12);
+  --glow:radial-gradient(60% 60% at 50% 0%,rgba(255,164,27,.14),transparent 70%); --shadow-1:0 1px 0 rgba(0,0,0,.4); --shadow-2:0 10px 30px rgba(0,0,0,.45); --shadow-3:0 30px 80px rgba(0,0,0,.6)}
+
+/* base */
+.ods,.ods *{box-sizing:border-box}
+.ods{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:"cv11","ss01","ss03"}
+.ods a{color:inherit;text-decoration:none}
+.ods ::selection{background:var(--accent-soft)}
+.ods :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){.ods *{transition:none!important;animation:none!important}}
+
+/* type */
+.o-display{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.035em;font-weight:650;margin:0}
+.o-h1{font-size:clamp(1.5rem,3vw,2rem);line-height:1.15;letter-spacing:-.025em;font-weight:620;margin:0}
+.o-h2{font-size:1.05rem;letter-spacing:-.01em;font-weight:600;margin:0}
+.o-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.o-lead{font-size:1.06rem;color:var(--muted);max-width:620px}
+.o-muted{color:var(--muted)} .o-faint{color:var(--faint)} .o-num{font-variant-numeric:tabular-nums}
+.o-grad{background:linear-gradient(180deg,var(--text) 30%,color-mix(in srgb,var(--text) 55%,transparent));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* layout */
+.o-wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.o-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.o-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.o-sp{flex:1}
+.o-glow{position:relative;isolation:isolate}
+.o-glow::before{content:"";position:absolute;inset:-120px -20% auto;height:420px;background:var(--glow);z-index:-1;pointer-events:none}
+
+/* surfaces */
+.o-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);padding:16px;box-shadow:var(--shadow-1);transition:border-color var(--t-2) var(--ease),transform var(--t-2) var(--ease),box-shadow var(--t-2) var(--ease)}
+a.o-card:hover,.o-card.is-link:hover{border-color:var(--line-2);transform:translateY(-1px);box-shadow:var(--shadow-2)}
+.o-tile{display:flex;gap:12px;align-items:flex-start}
+.o-ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--bg-2);border:1px solid var(--line);font-size:1rem}
+.o-sep{height:1px;background:var(--line);border:0;margin:16px 0}
+
+/* controls */
+.o-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 14px;border-radius:var(--r-2);border:1px solid var(--line-2);background:var(--raised);color:var(--text);font:500 .9rem var(--font);cursor:pointer;transition:background var(--t-1),border-color var(--t-1),transform var(--t-1)}
+.o-btn:hover{border-color:color-mix(in srgb,var(--text) 22%,transparent)}
+.o-btn:active{transform:scale(.98)}
+.o-btn.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
+.o-btn.primary:hover{background:var(--accent-2)}
+.o-btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}.o-btn.ghost:hover{color:var(--text);background:var(--bg-2)}
+.o-btn.lg{height:44px;padding:0 20px;font-size:.98rem}
+.o-input{width:100%;height:40px;padding:0 12px;border-radius:var(--r-2);border:1px solid var(--line-2);background:var(--surface);color:var(--text);font:inherit;transition:border-color var(--t-1),box-shadow var(--t-1)}
+.o-input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.o-kbd{display:inline-flex;align-items:center;gap:2px;font:500 .72rem var(--mono);color:var(--muted);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:var(--surface)}
+.o-badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:var(--r-pill);font-size:.72rem;font-weight:600;border:1px solid var(--line);color:var(--muted);background:var(--bg-2)}
+.o-badge.accent{color:var(--accent);background:var(--accent-soft);border-color:transparent}
+.o-badge .d{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* tables (Stripe-like) */
+.o-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.o-table th{font-size:.75rem;font-weight:600;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+.o-table td{padding:12px;border-bottom:1px solid var(--line)}
+.o-table tr:hover td{background:var(--bg-2)}
+
+/* motion */
+@keyframes o-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.o-in{animation:o-in var(--t-3) var(--ease) both}
+.o-skel{background:linear-gradient(90deg,var(--bg-2),var(--line),var(--bg-2));background-size:200% 100%;animation:o-sk 1.2s linear infinite;border-radius:8px}
+@keyframes o-sk{to{background-position:-200% 0}}
+
+/* command palette */
+.o-cmdk{position:fixed;inset:0;z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px;background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(6px)}
+.o-cmdk.on{display:flex}
+.o-cmdk-box{width:100%;max-width:620px;background:var(--raised);border:1px solid var(--line-2);border-radius:16px;box-shadow:var(--shadow-3);overflow:hidden;animation:o-in var(--t-2) var(--ease)}
+.o-cmdk-in{width:100%;height:54px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);font:400 1rem var(--font);padding:0 18px;outline:0}
+.o-cmdk-list{max-height:min(420px,60vh);overflow:auto;padding:6px}
+.o-cmdk-g{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);padding:10px 12px 4px}
+.o-cmdk-it{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--text-2)}
+.o-cmdk-it .o-ic{width:28px;height:28px;border-radius:8px;font-size:.9rem}
+.o-cmdk-it small{display:block;color:var(--faint);font-size:.78rem}
+.o-cmdk-it.on{background:var(--bg-2);color:var(--text)}
+.o-cmdk-ft{display:flex;gap:14px;padding:10px 14px;border-top:1px solid var(--line);font-size:.74rem;color:var(--faint)}
+.o-cmdk-empty{padding:28px;text-align:center;color:var(--muted)}

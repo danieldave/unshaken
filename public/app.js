@@ -120,13 +120,46 @@ function route() {
 }
 function renderView() {
   const fn = { drop: vDrop, board: vBoard, check: vCheck, sprint: vSprint, more: vMore, coach: vCoach, wall: vWall, captain: vCaptain }[view];
+  $("#main").dataset.view = view;
   $("#main").innerHTML = fn();
+  renderHero();
   after[view]?.();
   document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
   $("#listen").textContent = speaking ? t("stop") : t("listen");
 }
 const after = {};
 after.board = () => { const q = $("#q"); if (!q) return; q.oninput = () => { S.q = q.value; const pos = q.selectionStart; renderView(); const n = $("#q"); n.focus(); n.setSelectionRange(pos, pos); }; };
+
+/* ===== Hero: today's rates as a tabular strip ===== */
+const CUR = { usd: "$1", gbp: "£1", eur: "€1", sek: "1 kr" };
+function renderHero() {
+  const h = $("#hero"); if (!h) return;
+  const on = (view === "drop" || view === "board") && S.rates;
+  h.hidden = !on; if (!on) return;
+  h.dataset.view = view;
+  const keys = Object.keys(S.rates).filter(k => S.rates[k]?.ngn).slice(0, 4), u = S.rates.usd;
+  h.innerHTML = `<div class="hero-copy"><span class="o-eyebrow o-num">${esc(new Date().toLocaleDateString(S.lang === "fr" ? "fr-FR" : "en-GB", { weekday: "long", day: "numeric", month: "long" }))}</span>
+      <h1 class="o-grad" style="margin-top:10px">${esc(t("board_title", { n: openItems().length }))}</h1>
+      <p class="o-lead">${esc(t("board_sub"))}</p>
+      ${view === "drop" ? `<div class="hero-cta"><a class="btn go" href="#board">${esc(t("s_all"))}</a><button class="btn" type="button" data-quiz>${esc(S.profile ? t("q_edit") : t("s_fit_cta"))}</button></div>` : ""}</div>
+    <div><div class="rates-h"><span class="o-eyebrow">${esc(t("s_dollar"))}</span>${u ? `<span class="sub o-num">${esc(fmtD(u.date))}</span>` : ""}</div>
+      <div class="rates" role="list">${keys.map(k => { const r = S.rates[k]; return `<div role="listitem"><span class="k"><span>${esc(CUR[k] || k.toUpperCase())}</span></span><b>${fmtN(r.ngn)}</b><small title="${esc(r.source)}">${esc(r.source)}</small></div>`; }).join("")}</div></div>`;
+}
+let pal = null;
+function buildPalette() {
+  if (!window.ODS?.cmdk) return;
+  const nav = [...TABS, "coach", "wall", "captain"].map(v => ({ group: "Go to", icon: "→", title: t("nav_" + v), href: "#" + v, keywords: v }));
+  const cats = ["All", ...(S.profile ? ["fit"] : []), "Go", "Earn", "Learn", "Grow", "Saved"].map(c => ({ group: "Filter the board", icon: "#", title: t("cat_" + (c === "All" || c === "Saved" ? c.toLowerCase() : c)), keywords: "filter category " + c,
+    run: () => { S.cat = c; store.set("u_cat", c); if (view === "board") renderView(); else location.hash = "#board"; } }));
+  const acts = [
+    { group: "Actions", icon: "?", title: S.profile ? t("q_edit") : t("q_title"), hint: t("s_fit_cta"), run: openQuiz, keywords: "quiz fit eligibility" },
+    { group: "Actions", icon: "♪", title: t("listen"), run: () => speaking ? stopSpeak() : speak(), keywords: "read aloud speak" },
+    { group: "Actions", icon: "▤", title: "Daily digest", hint: "/digest", href: "/digest", keywords: "digest daily rates share" }
+  ];
+  const langs = LANGS.map(l => ({ group: "Language", icon: "A", title: l.name, hint: l.code === S.lang ? "✓" : "", keywords: "language " + l.code, run: () => { $("#lang").value = l.code; setLang(l.code); } }));
+  const doors = S.items.map(raw => { const x = it$(raw); return { group: "Doors", icon: { Go: "✈", Earn: "$", Learn: "✎", Grow: "↗" }[raw.cat] || "•", title: x.title, hint: `${t("cat_" + raw.cat)} · ${dueLabel(raw)[0]}`, keywords: [x.get, x.who].join(" "), run: () => openDetail(raw.id) }; });
+  pal = window.ODS.cmdk([...nav, ...acts, ...cats, ...doors, ...langs]);
+}
 
 /* ===== Today's Drop ===== */
 let idx = 0, start = Date.now();
@@ -179,10 +212,11 @@ after.drop = () => { paintStory(); $("#prev").onclick = () => goStory(idx - 1); 
 
 /* ===== Board ===== */
 function card(raw) {
-  const it = it$(raw), [lab, cls] = dueLabel(raw), f = fit(raw), inSprint = S.sprints.some(s => s.id === raw.id);
+  const it = it$(raw), [lab, c0] = dueLabel(raw), f = fit(raw), inSprint = S.sprints.some(s => s.id === raw.id);
+  const cls = c0 || (left(raw.due).d < 7 ? "hot" : "");
   return `<article class="card">
     <div class="row"><span class="tag">${t("cat_" + raw.cat)}</span><span class="due ${cls}">${lab}</span></div>
-    <h3>${esc(it.title)}</h3><p>${esc(it.get)}</p>
+    <h3><button type="button" data-detail="${raw.id}">${esc(it.title)}</button></h3><p>${esc(it.get)}</p>
     ${naira(raw) ? `<div class="naira"><strong>${naira(raw)}</strong><span class="sub">${t("at_rate")} · ${fmtD(S.rates[raw.amount.cur.toLowerCase()].date)}</span></div>` : ""}
     <p><strong>${t("who")}:</strong> ${esc(it.who)}</p>
     ${raw.rolling ? "" : `<p><strong>${t("deadline")}:</strong> ${esc(it.dueText)}</p>`}
@@ -210,12 +244,11 @@ function vBoard() {
   const list = S.items.filter(it => S.cat === "All" || (S.cat === "Saved" ? S.saved.has(it.id) : S.cat === "fit" ? fit(it) !== "no" : it.cat === S.cat)).sort((a, b) => rank(a) - rank(b));
   const q = (S.q || "").toLowerCase().trim();
   const shown = q ? list.filter(it => { const x = it$(it); return [x.title, x.get, x.who, it.cat].join(" ").toLowerCase().includes(q); }) : list;
-  return `<h2 style="margin-top:18px">${t("board_title", { n: openItems().length })}</h2>
-    <p class="sub" style="margin:6px 0 0">${t("board_sub")}</p>
+  return `<h2 class="sr">${t("board_title", { n: openItems().length })}</h2>
     <div class="panel" style="margin-top:14px;padding:14px"><div class="row"><strong>${S.profile ? t("qualify_n", { n: fitCount() }) + (nearCount() ? ` · ${t("near_n", { n: nearCount() })}` : "") : t("q_title")}</strong>
       <button class="btn sm" data-quiz>${S.profile ? t("q_edit") : t("s_fit_cta")}</button></div></div>
-    <div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><input type="text" id="q" placeholder="${esc(t("search_ph"))}" value="${esc(S.q || "")}" aria-label="${esc(t("search_ph"))}"></div>
-    <div class="chips">${cats.map(c => `<button aria-pressed="${c === S.cat}" data-c="${c}">${t("cat_" + (c === "All" || c === "Saved" ? c.toLowerCase() : c))}</button>`).join("")}</div>
+    <div class="board-tools"><div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><input type="text" id="q" placeholder="${esc(t("search_ph"))}" value="${esc(S.q || "")}" aria-label="${esc(t("search_ph"))}"></div>
+    <div class="chips">${cats.map(c => `<button aria-pressed="${c === S.cat}" data-c="${c}">${t("cat_" + (c === "All" || c === "Saved" ? c.toLowerCase() : c))}</button>`).join("")}</div></div>
     <div id="list">${shown.length ? shown.map(card).join("") : `<p class="empty">${t(S.cat === "Saved" ? "saved_empty" : "fit_none")}</p>`}</div>`;
 }
 
@@ -544,6 +577,27 @@ async function shareImage(kind, btn) {
   btn.textContent = old; btn.disabled = false;
 }
 
+/* ---------- calm listing detail ---------- */
+function openDetail(id) {
+  const raw = S.items.find(i => i.id === id); if (!raw) return;
+  const it = it$(raw), [lab, c0] = dueLabel(raw), cls = c0 || (left(raw.due).d < 7 ? "hot" : ""), inSprint = S.sprints.some(s => s.id === raw.id);
+  $("#modal").innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dtt">
+    <div class="row"><span class="row" style="justify-content:flex-start"><span class="tag">${t("cat_" + raw.cat)}</span><span class="due ${cls}">${lab}</span></span><button type="button" class="pill" data-close aria-label="Close">✕</button></div>
+    <h2 id="dtt">${esc(it.title)}</h2>
+    <p class="o-lead" style="margin:0;font-size:16px">${esc(it.get)}</p>
+    ${naira(raw) ? `<div class="naira"><strong>${naira(raw)}</strong><span class="sub">${t("at_rate")} · ${fmtD(S.rates[raw.amount.cur.toLowerCase()].date)}</span></div>` : ""}
+    <dl class="detail-meta"><dt>${t("who")}</dt><dd>${esc(it.who)}</dd>${raw.rolling ? "" : `<dt>${t("deadline")}</dt><dd>${esc(it.dueText)}</dd>`}</dl>
+    ${fitBlock(raw)}
+    ${raw.flag ? `<div class="note">${t("confirm")} ${esc(raw.flag)}</div>` : ""}
+    <div><div class="o-eyebrow" style="margin-bottom:4px">${t("steps", { n: it.steps.length })}</div><ol class="nsteps">${it.steps.map(s => `<li><span>${esc(s)}</span></li>`).join("")}</ol></div>
+    <div class="acts"><a class="btn go" href="${esc(raw.link)}" target="_blank" rel="noopener">${t("official")}</a>
+      <button class="btn" data-save="${raw.id}">${S.saved.has(raw.id) ? t("saved") : t("save")}</button>
+      <button class="btn" data-share="${raw.id}">${t("share")}</button>
+      ${raw.cat === "Go" ? `<button class="btn" data-writer="${raw.id}">${t("writer_btn")}</button>` : ""}
+      ${raw.rolling ? "" : `<button class="btn" data-sprint="${raw.id}">${inSprint ? t("in_sprint") : t("start_sprint")}</button>`}</div></div>`;
+  $("#modal").hidden = false; $("#modal [data-close]").focus();
+}
+
 /* ---------- welcome (first visit) ---------- */
 function welcome() {
   $("#modal").innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wt">
@@ -591,6 +645,7 @@ document.addEventListener("click", async e => {
   const d = el.dataset;
   if ("quiz" in d) { e.preventDefault(); openQuiz(); }
   if (d.img) { e.preventDefault(); shareImage(d.img, el); }
+  if (d.detail) openDetail(d.detail);
   if (d.writer) openWriter(d.writer);
   if (d.alerts) d.alerts === "on" ? alertsOn() : alertsOff();
   if ("shareapp" in d) { const link = shareLink() || location.href; try { if (navigator.share) { await navigator.share({ title: "Unshaken", text: t("share_app_sub"), url: link }); S.shares++; store.set("u_shares", S.shares); } else { await copy(link, null); toast(t("copied")); } } catch {} }
@@ -609,6 +664,7 @@ document.addEventListener("click", async e => {
   if (d.sprint) {
     const raw = S.items.find(i => i.id === d.sprint);
     if (!S.sprints.some(s => s.id === raw.id)) { S.sprints.push(makeSprint(raw)); store.set("u_sprints", S.sprints); }
+    if (!$("#modal").hidden && el.closest("#modal")) closeModal();
     location.hash = "#sprint"; if (view === "sprint") renderView();
   }
   if (d.unsprint) { S.sprints = S.sprints.filter(s => s.id !== d.unsprint); store.set("u_sprints", S.sprints); renderView(); }
@@ -643,7 +699,7 @@ async function setLang(code) {
       } catch {}
     }
   }
-  renderNav(); renderView();
+  renderNav(); renderView(); buildPalette();
 }
 
 /* ---------- listen mode ---------- */
@@ -705,6 +761,9 @@ async function boot() {
   if ("serviceWorker" in navigator && S.env.api && location.protocol === "https:") navigator.serviceWorker.register("/sw.js").catch(() => {});
   addEventListener("hashchange", route);
   route();
+  buildPalette();
+  if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) $("#kk").textContent = "⌘K";
+  $("#cmdk").onclick = () => window.ODS?.openCmdk?.();
   if (!store.get("u_seen", 0) && !location.hash) welcome();
   if (S.lang !== "en") setLang(S.lang);
   setInterval(tick, 500); tick();

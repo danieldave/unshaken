@@ -1,8 +1,8 @@
 // Unshaken service worker: instant loads and offline reading.
 // App shell: cache first, refreshed in the background. Listings: network first, cached copy offline.
 // API calls are never cached.
-const VERSION = "unshaken-v5";
-const SHELL = ["/", "/index.html", "/app.js", "/i18n.js", "/share.js", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
+const VERSION = "unshaken-v6";
+const SHELL = ["/", "/index.html", "/app.js", "/i18n.js", "/share.js", "/app.css", "/ds/ds.css", "/ds/cmdk.js", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

@@ -5,50 +5,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Unshaken Daily</title>
 <meta name="description" content="Today's exchange rates and newly verified scholarships, free courses and earning doors. Free, no sign-up.">
-<meta name="theme-color" content="#07110D">
+<meta name="theme-color" content="#08090a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
 <meta property="og:title" content="Unshaken Daily: rates and today's open doors">
 <meta property="og:description" content="Free. No sign-up. Every link is an official page.">
 <meta property="og:image" content="/icons/og.png">
 <link rel="icon" href="/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ds/ds.css">
 <style>
-:root{color-scheme:dark;--bg:#07110D;--card:#0F1D17;--card2:#14261E;--line:rgba(243,247,244,.13);--ink:#F3F7F4;--soft:#CFE0D6;--mute:#A9BDB2;--mint:#2BD38A;--gold:#F5B83D;--coral:#FF8A6B}
-*{box-sizing:border-box;min-width:0}
-body{margin:0;background:radial-gradient(120% 60% at 50% 0%,#0F2A1E 0%,var(--bg) 60%);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;min-height:100vh}
-h1{font:700 clamp(28px,8vw,38px)/1.05 "Space Grotesk",sans-serif;margin:0;text-wrap:balance}
-a{color:var(--mint)}
-button,select,.btn{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+/* Editorial digest — page layer on ODS tokens */
+:root{--mint:#12804e;--gold:#a85a00}
+@media (prefers-color-scheme:dark){:root{--mint:#3ecf8e;--gold:var(--accent)}}
+
+*{min-width:0}
 [hidden]{display:none!important}
-.wrap{max-width:600px;margin:0 auto;padding:18px 16px 60px}
-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
-.logo{font:700 20px "Space Grotesk",sans-serif;text-decoration:none;color:var(--ink);display:flex;gap:8px;align-items:center}
-.logo img{width:30px;height:30px;border-radius:8px}
-select{min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);padding:0 10px}
-.kick{color:var(--gold);font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
-.sub{color:var(--soft);margin:8px 0 18px}
-.paper{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:20px;padding:20px 18px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.paper p{margin:0 0 10px;white-space:pre-wrap;word-break:break-word}
-.paper p.h{font:600 18px "Space Grotesk",sans-serif;color:var(--ink);margin-top:14px}
-.paper p.it{padding-left:12px;border-left:2px solid var(--line)}
-.paper .note{color:var(--mute);font-size:13px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:transparent;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--ink);cursor:pointer;padding:0 12px;text-align:center}
-.btn.go{background:var(--mint);color:var(--bg);border:0;grid-column:1/-1}
-.pill{display:inline-block;font-size:13px;border:1px solid var(--mint);color:var(--mint);border-radius:99px;padding:2px 10px;margin-left:6px}
-.beta{color:var(--gold);font-size:13px}
-.foot{color:var(--mute);font-size:13px;margin-top:20px;text-align:center}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600}
+button,select,.btn{font:inherit;color:inherit}
+.topbar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header{display:flex;align-items:center;gap:10px;height:56px;max-width:680px;margin:0 auto;padding:0 16px}
+.logo{font-weight:650;font-size:16px;letter-spacing:-.02em;display:flex;gap:10px;align-items:center}
+.logo img{width:28px;height:28px;border-radius:8px;border:1px solid var(--line-2)}
+select,.kb{height:36px;border-radius:10px;border:1px solid var(--line-2);background:var(--raised);color:var(--text);padding:0 10px;font-size:13.5px;cursor:pointer}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 64px;overflow-x:clip}
+.hero{padding:44px 0 22px}
+.kick{color:var(--muted);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+h1{font-size:clamp(32px,8vw,48px);line-height:1.04;letter-spacing:-.035em;font-weight:650;margin:10px 0 0;text-wrap:balance}
+.sub{color:var(--muted);margin:12px 0 0;font-size:16px;max-width:520px}
+.pill{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;height:26px;font-size:13px;font-weight:600;letter-spacing:0;color:var(--mint);background:color-mix(in srgb,var(--mint) 12%,transparent);border-radius:99px;padding:0 10px;margin-left:8px;-webkit-text-fill-color:var(--mint)}
+.beta{color:var(--gold);font-size:13px;margin:10px 0 0}
+.paper{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);padding:8px 22px 18px;box-shadow:var(--shadow-2);font-size:15.5px;line-height:1.65}
+.paper p{margin:0 0 10px;white-space:pre-wrap;word-break:break-word;color:var(--text-2)}
+.paper p:first-child{margin-top:14px}
+.paper p strong{color:var(--text);font-weight:600}
+.paper p.h{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+.paper p.h strong{color:var(--muted)}
+.paper p.h:first-child{border-top:0;padding-top:0}
+.paper p.it{padding:2px 0 2px 14px;border-left:2px solid var(--line-2);font-variant-numeric:tabular-nums}
+.paper a{color:var(--accent);word-break:break-all}
+.paper a:hover{text-decoration:underline}
+.paper .note{color:var(--muted);font-size:13px}
+.skel{display:grid;gap:10px;padding:14px 0 4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.btn{min-height:44px;border-radius:var(--r-2);border:1px solid var(--line-2);background:var(--raised);font-weight:550;font-size:14.5px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--text);cursor:pointer;padding:0 12px;text-align:center;transition:border-color var(--t-1),background var(--t-1),transform var(--t-1)}
+.btn:hover{border-color:color-mix(in srgb,var(--text) 22%,transparent)}
+.btn:active{transform:scale(.98)}
+.btn.go{background:var(--accent);color:var(--accent-ink);border-color:transparent;grid-column:1/-1}
+.btn.go:hover{background:var(--accent-2)}
+.foot{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:550;box-shadow:var(--shadow-2);animation:o-in var(--t-2) var(--ease) both}
+@media (hover:none),(max-width:600px){.o-kbd{display:none}}
+.kb{display:inline-flex;align-items:center;gap:6px}
+.paper p.ti{color:var(--text);font-weight:600;margin:14px 0 6px}
+@media print{.topbar,.actions,.toast{display:none!important}.paper{box-shadow:none;border-color:#ccc}}
 </style>
 </head>
-<body>
+<body class="ods">
+<div class="topbar"><header><a class="logo" href="/"><img src="/icons/icon-192.png" alt="">Unshaken</a><span class="o-sp"></span><button class="kb" id="cmdk" type="button" aria-label="Command menu (Ctrl+K)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg><span class="o-kbd" id="kk">Ctrl K</span></button><select id="lang" aria-label="Language"></select></header></div>
 <div class="wrap">
-  <header><a class="logo" href="/"><img src="/icons/icon-192.png" alt="">Unshaken</a><select id="lang" aria-label="Language"></select></header>
-  <div class="kick" id="date"></div>
-  <h1 id="title">Today's digest</h1>
+  <section class="hero o-glow">
+  <div class="kick o-num" id="date"></div>
+  <h1 id="title" class="o-grad">Today's digest</h1>
   <p class="sub" id="sub"></p>
   <p class="beta" id="beta" hidden></p>
+  </section>
   <div class="paper" id="paper" aria-live="polite"><p class="note" id="status">Loading…</p></div>
   <div class="actions" id="actions" hidden>
     <button class="btn go" id="copy"></button>
@@ -58,6 +78,7 @@ select{min-height:40px;border-radius:10px;border:1px solid var(--line);backgroun
   </div>
   <p class="foot" id="foot"></p>
 </div>
+<script src="/ds/cmdk.js"></script>
 <script src="/i18n-ops.js"></script>
 <script>
 {
@@ -75,7 +96,7 @@ function render(raw) {
   const inline = s => esc(s).replace(/\*([^*\n]+)\*/g, "<strong>$1</strong>").replace(/(^|\s)_([^_\n]+)_(?=\s|$)/g, "$1<em>$2</em>").replace(/https:\/\/[^\s<)]+/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
   return raw.split("\n").map(l => {
     if (!l.trim()) return "";
-    const cls = /^\S+\s\*[^*]+\*(\s\(|$)/.test(l) ? "h" : /^\s{3}/.test(l) ? "it" : /^_.*_$/.test(l) ? "note" : "";
+    const cls = /^\d+\.\s\*/.test(l) ? "ti" : /^\S+\s\*[^*]+\*(\s\(|$)/.test(l) ? "h" : /^\s{3}/.test(l) ? "it" : /^_.*_$/.test(l) ? "note" : "";
     return `<p class="${cls}">${inline(l.trim())}</p>`;
   }).join("");
 }
@@ -89,7 +110,7 @@ function paint() {
 }
 async function load() {
   paint();
-  $("#actions").hidden = true; $("#paper").innerHTML = `<p class="note">${esc(t("dg_loading"))}</p>`;
+  $("#actions").hidden = true; $("#paper").innerHTML = `<div class="skel" aria-busy="true"><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden">${esc(t("dg_loading"))}</span><div class="o-skel" style="height:14px;width:40%"></div><div class="o-skel" style="height:44px"></div><div class="o-skel" style="height:14px;width:30%;margin-top:10px"></div><div class="o-skel" style="height:60px"></div><div class="o-skel" style="height:60px"></div></div>`;
   try {
     const r = await fetch(`/api/listings?view=digest&lang=${encodeURIComponent(lang)}`);
     if (!r.ok) throw new Error(r.status);
@@ -99,7 +120,7 @@ async function load() {
     if (d.fresh) $("#title").insertAdjacentHTML("beforeend", ` <span class="pill">${esc(t("dg_fresh", { n: d.fresh }))}</span>`);
     $("#wa").href = "https://wa.me/?text=" + encodeURIComponent(text);
     $("#tg").href = "https://t.me/share/url?url=" + encodeURIComponent(location.origin + "/digest") + "&text=" + encodeURIComponent(text.slice(0, 3000));
-    $("#actions").hidden = false;
+    $("#actions").hidden = false; palette();
   } catch { $("#paper").innerHTML = `<p class="note">${esc(t("dg_error"))}</p>`; }
 }
 $("#lang").innerHTML = LANGS.map(l => `<option value="${l.code}">${esc(l.name)}${l.code === "en" ? "" : " (beta)"}</option>`).join("");
@@ -109,6 +130,18 @@ $("#copy").onclick = async () => {
   try { await navigator.clipboard.writeText(text); } catch { const ta = document.createElement("textarea"); ta.value = text; document.body.append(ta); ta.select(); try { document.execCommand("copy"); } catch {} ta.remove(); }
   const d = document.createElement("div"); d.className = "toast"; d.textContent = t("dg_copied"); document.body.append(d); setTimeout(() => d.remove(), 2000);
 };
+function palette() {
+  if (!window.ODS?.cmdk) return;
+  const L = [];
+  if (text) L.push({ group: "Share", icon: "⧉", title: t("dg_copy"), run: () => $("#copy").click() },
+    { group: "Share", icon: "↗", title: t("dg_wa"), href: $("#wa").href }, { group: "Share", icon: "↗", title: t("dg_tg"), href: $("#tg").href });
+  L.push({ group: "Go to", icon: "→", title: t("dg_back"), href: "/" });
+  LANGS.forEach(l => L.push({ group: "Language", icon: "A", title: l.name, hint: l.code === lang ? "✓" : "", run: () => { $("#lang").value = l.code; $("#lang").onchange({ target: $("#lang") }); } }));
+  window.ODS.cmdk(L);
+}
+if (/Mac|iPhone|iPad/.test(navigator.platform || "")) $("#kk").textContent = "⌘K";
+$("#cmdk").onclick = () => window.ODS?.openCmdk?.();
+palette();
 load();
 }
 </script>
