@@ -10,7 +10,8 @@ let problems = 0;
 console.log(`Listings: ${data.items.length} · data updated ${data.updated}`);
 for (const k of ["usd", "gbp"]) {
   const age = Math.round((now - new Date(data.rates[k].date)) / DAY);
-  if (age > 7) { console.log(`⚠  ${k.toUpperCase()} rate is ${age} days old`); problems++; }
+  // Live rates come from open.er-api.com in the digest/board; these saved rates are only an offline fallback, so staleness is a warning.
+  if (age > 7) console.log(`⚠  ${k.toUpperCase()} fallback rate is ${age} days old (warning only — live rates are fetched daily)`);
 }
 
 const ids = new Set();
